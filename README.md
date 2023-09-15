@@ -1,2 +1,2 @@
 # MOF
-Aplicativo mobile de chat
+Aplicativo mobile de chat.
