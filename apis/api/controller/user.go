@@ -7,11 +7,11 @@ import (
 )
 
 type UserController struct {
-	UseCase usecase.UserUseCase
+	User usecase.UserUseCase
 }
 
 func (uc *UserController) GetAll(c *gin.Context) {
-	users, err := uc.UseCase.GetAll(c)
+	users, err := uc.User.GetAll(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 	} else {

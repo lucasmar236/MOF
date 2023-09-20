@@ -1,9 +1,12 @@
 package domain
 
-import "context"
+import (
+	"context"
+	"gorm.io/gorm"
+)
 
 type User struct {
-	ID          int64  `db:"id" json:"id"`
+	gorm.Model
 	FirstName   string `db:"first_name" json:"first_name"`
 	LastName    string `db:"last_name" json:"last_name"`
 	Password    string `db:"password" json:"password"`
@@ -13,5 +16,9 @@ type User struct {
 }
 
 type UserRepository interface {
-	Fetch(c context.Context) ([]User, error)
+	GetAll(c context.Context) ([]User, error)
+	GetId(c context.Context, id int64) (User, error)
+	GetEmail(c context.Context, email string) (User, error)
+	Post(c context.Context, user *User) error
+	Put(c context.Context, user *User) error
 }

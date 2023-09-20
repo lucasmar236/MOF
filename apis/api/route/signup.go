@@ -10,8 +10,8 @@ import (
 	"time"
 )
 
-func NewUserRouter(env *infrastructure.Env, timeout time.Duration, db *gorm.DB, group *gin.RouterGroup) {
+func NewSignupRouter(env *infrastructure.Env, timeout time.Duration, db *gorm.DB, group *gin.RouterGroup) {
 	ur := repository.NewUserRepository(db)
-	uc := &controller.UserController{User: *usecase.NewUserUsecase(ur, timeout)}
-	group.GET("/", uc.GetAll)
+	sc := &controller.SignupController{Signup: *usecase.NewSignUseCase(ur, timeout)}
+	group.POST("/signup", sc.Singup)
 }

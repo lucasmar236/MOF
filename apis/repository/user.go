@@ -16,7 +16,21 @@ func NewUserRepository(db *gorm.DB) domain.UserRepository {
 	}
 }
 
-func (ur *userReposity) Fetch(c context.Context) ([]domain.User, error) {
-	var users []domain.User
-	return users, ur.db.Find(&users).Error
+func (ur *userReposity) GetAll(c context.Context) (users []domain.User, err error) {
+	return users, ur.db.WithContext(c).Find(&users).Error
+}
+
+func (ur *userReposity) Post(c context.Context, user *domain.User) error {
+	return ur.db.WithContext(c).Create(user).Error
+}
+
+func (ur *userReposity) GetId(c context.Context, id int64) (user domain.User, err error) {
+	return user, ur.db.WithContext(c).Where("id = ?", id).First(&user).Error
+}
+func (ur *userReposity) GetEmail(c context.Context, email string) (user domain.User, err error) {
+	return user, ur.db.WithContext(c).Where("email = ?", email).First(&user).Error
+}
+
+func (ur *userReposity) Put(c context.Context, user *domain.User) error {
+	return ur.db.WithContext(c).Save(user).Error
 }

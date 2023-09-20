@@ -11,8 +11,8 @@ type UserUseCase struct {
 	timeout time.Duration
 }
 
-func NewUserUsecase(userRepository domain.UserRepository, timeout time.Duration) UserUseCase {
-	return UserUseCase{
+func NewUserUsecase(userRepository domain.UserRepository, timeout time.Duration) *UserUseCase {
+	return &UserUseCase{
 		user:    userRepository,
 		timeout: timeout,
 	}
@@ -21,5 +21,5 @@ func NewUserUsecase(userRepository domain.UserRepository, timeout time.Duration)
 func (uu *UserUseCase) GetAll(c context.Context) ([]domain.User, error) {
 	ctx, cancel := context.WithTimeout(c, uu.timeout)
 	defer cancel()
-	return uu.user.Fetch(ctx)
+	return uu.user.GetAll(ctx)
 }
