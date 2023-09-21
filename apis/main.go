@@ -11,7 +11,7 @@ import (
 func main() {
 	app := infrastructure.App()
 	engine := gin.Default()
-	timeout := time.Second * 30
+	timeout := time.Second * time.Duration(app.Env.Timeout)
 	route.Setup(app.Env, timeout, app.DB, engine)
 
 	err := engine.Run(":" + app.Env.HttpPort)

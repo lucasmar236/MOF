@@ -18,4 +18,5 @@ func Setup(env *infrastructure.Env, timeout time.Duration, db *gorm.DB, engine *
 	router := engine.Group("/api/v1")
 	NewUserRouter(env, timeout, db, router)
 	NewSignupRouter(env, timeout, db, router)
+	NewLoginRouter(env, timeout, db, router)
 }

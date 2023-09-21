@@ -6,13 +6,16 @@ import (
 )
 
 type Env struct {
-	HttpPort string `mapstructure:"HTTP_PORT"`
-	DbUser   string `mapstructure:"DB_USER"`
-	DbPass   string `mapstructure:"DB_PASS"`
-	DbHost   string `mapstructure:"DB_HOST"`
-	DbName   string `mapstructure:"DB_NAME"`
-	DbPort   string `mapstructure:"DB_PORT"`
-	Timezone string `mapstructure:"TIMEZONE"`
+	HttpPort   string `mapstructure:"HTTP_PORT"`
+	DbUser     string `mapstructure:"DB_USER"`
+	DbPass     string `mapstructure:"DB_PASS"`
+	DbHost     string `mapstructure:"DB_HOST"`
+	DbName     string `mapstructure:"DB_NAME"`
+	DbPort     string `mapstructure:"DB_PORT"`
+	Timezone   string `mapstructure:"TIMEZONE"`
+	SecretKey  string `mapstructure:"SECRET_KEY"`
+	Timeout    int    `mapstructure:"TIMEOUT"`
+	AccessTime int    `mapstructure:"ACCESS_TIME"`
 }
 
 func NewEnv() *Env {

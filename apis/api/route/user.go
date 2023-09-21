@@ -12,6 +12,6 @@ import (
 
 func NewUserRouter(env *infrastructure.Env, timeout time.Duration, db *gorm.DB, group *gin.RouterGroup) {
 	ur := repository.NewUserRepository(db)
-	uc := &controller.UserController{User: *usecase.NewUserUsecase(ur, timeout)}
+	uc := &controller.UserController{UserUserCase: *usecase.NewUserUsecase(ur, timeout), Env: env}
 	group.GET("/", uc.GetAll)
 }

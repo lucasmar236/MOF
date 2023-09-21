@@ -31,6 +31,10 @@ func (ur *userReposity) GetEmail(c context.Context, email string) (user domain.U
 	return user, ur.db.WithContext(c).Where("email = ?", email).First(&user).Error
 }
 
+func (ur *userReposity) GetUsername(c context.Context, username string) (user domain.User, err error) {
+	return user, ur.db.WithContext(c).Where("username = ?", username).First(&user).Error
+}
+
 func (ur *userReposity) Put(c context.Context, user *domain.User) error {
 	return ur.db.WithContext(c).Save(user).Error
 }
