@@ -1,12 +1,14 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/lucasmar236/MOF/domain"
 	"github.com/lucasmar236/MOF/infrastructure"
 	"github.com/lucasmar236/MOF/usecase"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"time"
 )
 
 type SignupController struct {
@@ -19,19 +21,19 @@ func (sc *SignupController) Signup(c *gin.Context) {
 
 	err := c.ShouldBind(&request)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"Message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
 	_, err = sc.SignupUseCase.GetUserByEmail(c, request.Email)
 	if err == nil {
-		c.JSON(http.StatusConflict, gin.H{"Message": "User already exists"})
+		c.JSON(http.StatusConflict, gin.H{"message": "User already exists"})
 		return
 	}
 
 	_, err = sc.SignupUseCase.GetUserByUsername(c, request.Username)
 	if err == nil {
-		c.JSON(http.StatusConflict, gin.H{"Message": "User already exists"})
+		c.JSON(http.StatusConflict, gin.H{"message": "User already exists"})
 		return
 	}
 
@@ -40,7 +42,7 @@ func (sc *SignupController) Signup(c *gin.Context) {
 		bcrypt.DefaultCost,
 	)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"Message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -57,15 +59,46 @@ func (sc *SignupController) Signup(c *gin.Context) {
 
 	err = sc.SignupUseCase.Post(c, &user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"Message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 
-	accessToken, err := sc.SignupUseCase.CreateAccessToken(&user, sc.Env.SecretKey, sc.Env.AccessTime)
+	expiry := time.Minute * time.Duration(sc.Env.ExpiryCode)
+	go func() {
+		err := sc.SignupUseCase.CreateTwoPhaseCode(c, sc.Env.EmailFrom, user.Email, expiry)
+		if err != nil {
+			fmt.Println("Error to send email to ", user.Email)
+		}
+	}()
+	c.JSON(http.StatusOK, gin.H{"message": "E-mail with code verification sent"})
+}
+
+func (sc *SignupController) VerifyTwoPhase(c *gin.Context) {
+	var request domain.TwoPhaseRequest
+
+	err := c.ShouldBind(&request)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"Message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusCreated, domain.SignupResponse{AccessToken: accessToken})
+	code, err := sc.SignupUseCase.VerifyTwoPhaseCode(c, request.Code)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Code invalid"})
+		return
+	}
+
+	user, err := sc.SignupUseCase.GetUserByEmail(c, code)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "User not found"})
+		return
+	}
+
+	token, err := sc.SignupUseCase.CreateAccessToken(&user, sc.Env.SecretKey, sc.Env.AccessTime)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, domain.TwoPhaseResponse{AccessToken: token})
 }

@@ -1,6 +1,9 @@
 package domain
 
-import "context"
+import (
+	"context"
+	"time"
+)
 
 type SignupRequest struct {
 	FirstName   string `json:"first_name" binding:"required"`
@@ -19,4 +22,6 @@ type SignupUseCase interface {
 	Post(c context.Context, user *User) error
 	GetUserByEmail(c context.Context, email string) (User, error)
 	CreateAccessToken(user *User, secret string, expiry int) (accessToken string, err error)
+	CreateTwoPhaseCode(message string, to string, from string, expiry time.Duration) error
+	VerifyTwoPhaseCode(c context.Context, code string) (string, error)
 }
