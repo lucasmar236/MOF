@@ -1,0 +1,36 @@
+{
+  "contatcs": [
+    {
+      "id": 1,
+      "name": "Arthur",
+      "email": "arthurjesus@gmail.com",
+      "password": "2o48J<%K",
+      "lastname": "Jesus",
+      "cellphone": "+55 55 9912343242"
+    },
+    {
+      "id": 2,
+      "name": "Cristiano",
+      "email": "cr7.crhis@gmail.com",
+      "password": "uA3E00&P",
+      "lastname": "Ronaldo",
+      "cellphone": "+55 55 9918903242"
+    },
+    {
+      "id": 3,
+      "name": "Lucas",
+      "email": "cr7.crhis@gmail.com",
+      "password": "uA3E00&P",
+      "lastname": "Chaves",
+      "cellphone": "+55 55 9918903242"
+    },
+    {
+      "id": 4,
+      "name": "Lucas",
+      "email": "cr7.crhis@gmail.com",
+      "password": "uA3E00&P",
+      "lastname": "Sordi",
+      "cellphone": "+55 55 9918903242"
+    }
+  ]
+}
