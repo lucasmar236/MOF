@@ -6,12 +6,15 @@ import (
 	"github.com/lucasmar236/MOF/infrastructure"
 	"github.com/lucasmar236/MOF/repository"
 	"github.com/lucasmar236/MOF/usecase"
+	"github.com/redis/go-redis/v9"
+	gomail "gopkg.in/mail.v2"
 	"gorm.io/gorm"
 	"time"
 )
 
-func NewSignupRouter(env *infrastructure.Env, timeout time.Duration, db *gorm.DB, group *gin.RouterGroup) {
-	ur := repository.NewUserRepository(db)
+func NewSignupRouter(env *infrastructure.Env, timeout time.Duration, cache *redis.Client, email *gomail.Dialer, db *gorm.DB, group *gin.RouterGroup) {
+	ur := repository.NewUserRepository(db, cache, email)
 	sc := &controller.SignupController{SignupUseCase: *usecase.NewSignUseCase(ur, timeout), Env: env}
 	group.POST("/signup", sc.Signup)
+	group.POST("/signup/verify", sc.VerifyTwoPhase)
 }

@@ -16,6 +16,13 @@ type Env struct {
 	SecretKey  string `mapstructure:"SECRET_KEY"`
 	Timeout    int    `mapstructure:"TIMEOUT"`
 	AccessTime int    `mapstructure:"ACCESS_TIME"`
+	EmailPort  int    `mapstructure:"EMAIL_PORT"`
+	EmailHost  string `mapstructure:"EMAIL_HOST"`
+	EmailFrom  string `mapstructure:"EMAIL_FROM"`
+	EmailPass  string `mapstructure:"EMAIL_PASS"`
+	CacheHost  string `mapstructure:"CACHE_HOST"`
+	CachePort  string `mapstructure:"CACHE_PORT"`
+	ExpiryCode int    `mapstructure:"EXPIRY_CODE"`
 }
 
 func NewEnv() *Env {
