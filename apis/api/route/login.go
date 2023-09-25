@@ -17,4 +17,5 @@ func NewLoginRouter(env *infrastructure.Env, timeout time.Duration, cache *redis
 	sc := &controller.LoginController{LoginUseCase: *usecase.NewLoginUseCase(ur, timeout), Env: env}
 	group.POST("/login", sc.Login)
 	group.POST("/login/verify", sc.VerifyTwoPhase)
+	group.POST("/logout", sc.Logout)
 }

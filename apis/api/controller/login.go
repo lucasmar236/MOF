@@ -78,3 +78,13 @@ func (lc *LoginController) VerifyTwoPhase(c *gin.Context) {
 
 	c.JSON(http.StatusOK, domain.TwoPhaseResponse{AccessToken: token})
 }
+
+func (lc *LoginController) Logout(c *gin.Context) {
+	token := c.GetHeader("Authorization")
+	err := lc.LoginUseCase.Logout(c, token, lc.Env.AccessTime)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusNoContent, "")
+}

@@ -24,4 +24,6 @@ type LoginUseCase interface {
 	CreateAccessToken(user *User, secret string, expiry int) (accessToken string, err error)
 	CreateTwoPhaseCode(message string, to string, from string, expiry time.Duration) error
 	VerifyTwoPhaseCode(c context.Context, code string) (string, error)
+	Logout(c context.Context)
+	VerifyLogout(c context.Context, token string) error
 }

@@ -17,8 +17,11 @@ func Setup(env *infrastructure.Env, timeout time.Duration, cache *redis.Client, 
 	engine.NoMethod(func(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Method not found"})
 	})
-	router := engine.Group("/api/v1")
-	NewUserRouter(env, timeout, cache, email, db, router)
-	NewSignupRouter(env, timeout, cache, email, db, router)
-	NewLoginRouter(env, timeout, cache, email, db, router)
+	PublicRouter := engine.Group("/api/v1")
+	NewSignupRouter(env, timeout, cache, email, db, PublicRouter)
+	NewLoginRouter(env, timeout, cache, email, db, PublicRouter)
+
+	ProtectRouter := engine.Group("/api/v1")
+	ProtectRouter.Use(NewAuthMiddleware(timeout, cache, email, db).Auth(env.SecretKey))
+	NewUserRouter(env, timeout, cache, email, db, ProtectRouter)
 }

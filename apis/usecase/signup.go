@@ -45,19 +45,19 @@ func (su *SignupUseCase) CreateAccessToken(user *domain.User, secret string, exp
 
 func (su *SignupUseCase) CreateTwoPhaseCode(c context.Context, from string, email string, expiry time.Duration) error {
 	code := rand.Intn(999999-100000) + 100000
-	err := su.user.SetTwoPhaseCode(c, strconv.Itoa(code), email, "Signup", expiry)
+	err := su.user.SetKey(c, strconv.Itoa(code), email, "Signup", expiry)
 	if err != nil {
 		return err
 	}
-	return su.user.SendEmailTwoPhaseCode(strconv.Itoa(code), email, from)
+	return su.user.SendEmail(strconv.Itoa(code), email, from)
 }
 
 func (su *SignupUseCase) VerifyTwoPhaseCode(c context.Context, code string) (string, error) {
-	email, err := su.user.GetTwoPhaseCode(c, code, "Signup")
+	email, err := su.user.GetKey(c, code, "Signup")
 	if err != nil {
 		return "", err
 	} else {
-		err := su.user.DeleteTwoPhaseCode(c, code, "Signup")
+		err := su.user.DeleteKey(c, code, "Signup")
 		if err != nil {
 			return "", err
 		} else {

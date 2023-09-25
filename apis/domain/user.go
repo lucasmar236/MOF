@@ -17,10 +17,10 @@ type User struct {
 }
 
 type UserRepository interface {
-	GetTwoPhaseCode(c context.Context, code string, prefix string) (string, error)
-	SetTwoPhaseCode(c context.Context, code string, email string, prefix string, expiry time.Duration) error
-	DeleteTwoPhaseCode(c context.Context, code string, prefix string) error
-	SendEmailTwoPhaseCode(message string, to string, from string) error
+	GetKey(c context.Context, key string, prefix string) (string, error)
+	SetKey(c context.Context, key string, value string, prefix string, expiry time.Duration) error
+	DeleteKey(c context.Context, key string, prefix string) error
+	SendEmail(message string, to string, from string) error
 	GetAll(c context.Context) ([]User, error)
 	GetId(c context.Context, id int64) (User, error)
 	GetEmail(c context.Context, email string) (User, error)

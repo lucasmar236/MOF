@@ -47,19 +47,19 @@ func (ur *userRepository) Put(c context.Context, user *domain.User) error {
 	return ur.db.WithContext(c).Save(user).Error
 }
 
-func (ur *userRepository) GetTwoPhaseCode(c context.Context, code string, prefix string) (string, error) {
-	return ur.cache.Get(c, fmt.Sprint(prefix, ":", code)).Result()
+func (ur *userRepository) GetKey(c context.Context, key string, prefix string) (string, error) {
+	return ur.cache.Get(c, fmt.Sprint(prefix, ":", key)).Result()
 }
 
-func (ur *userRepository) SetTwoPhaseCode(c context.Context, code string, email string, prefix string, expiry time.Duration) error {
-	return ur.cache.Set(c, fmt.Sprint(prefix, ":", code), email, expiry).Err()
+func (ur *userRepository) SetKey(c context.Context, key string, email string, prefix string, expiry time.Duration) error {
+	return ur.cache.Set(c, fmt.Sprint(prefix, ":", key), email, expiry).Err()
 }
 
-func (ur *userRepository) DeleteTwoPhaseCode(c context.Context, code string, prefix string) error {
-	return ur.cache.Del(c, fmt.Sprint(prefix, ":", code)).Err()
+func (ur *userRepository) DeleteKey(c context.Context, key string, prefix string) error {
+	return ur.cache.Del(c, fmt.Sprint(prefix, ":", key)).Err()
 }
 
-func (ur *userRepository) SendEmailTwoPhaseCode(message string, to string, from string) error {
+func (ur *userRepository) SendEmail(message string, to string, from string) error {
 	m := gomail.NewMessage()
 	m.SetHeaders(map[string][]string{
 		"From":    {m.FormatAddress(from, "MOF")},
