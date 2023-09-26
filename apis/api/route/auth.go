@@ -12,6 +12,6 @@ import (
 
 func NewAuthMiddleware(timeout time.Duration, cache *redis.Client, email *gomail.Dialer, db *gorm.DB) *middleware.AuthMiddleware {
 	ur := repository.NewUserRepository(db, cache, email)
-	return &middleware.AuthMiddleware{LoginUseCase: *usecase.NewLoginUseCase(ur, timeout)}
+	return &middleware.AuthMiddleware{LoginUseCase: usecase.NewLoginUseCase(ur, timeout)}
 
 }

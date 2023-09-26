@@ -2,14 +2,14 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/lucasmar236/MOF/usecase"
+	"github.com/lucasmar236/MOF/domain"
 	"github.com/lucasmar236/MOF/utils"
 	"net/http"
 	"strings"
 )
 
 type AuthMiddleware struct {
-	LoginUseCase usecase.LoginUseCase
+	LoginUseCase domain.LoginUseCase
 }
 
 func (am *AuthMiddleware) Auth(secret string) gin.HandlerFunc {

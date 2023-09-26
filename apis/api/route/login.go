@@ -14,7 +14,7 @@ import (
 
 func NewLoginRouter(env *infrastructure.Env, timeout time.Duration, cache *redis.Client, email *gomail.Dialer, db *gorm.DB, group *gin.RouterGroup) {
 	ur := repository.NewUserRepository(db, cache, email)
-	sc := &controller.LoginController{LoginUseCase: *usecase.NewLoginUseCase(ur, timeout), Env: env}
+	sc := &controller.LoginController{LoginUseCase: usecase.NewLoginUseCase(ur, timeout), Env: env}
 	group.POST("/login", sc.Login)
 	group.POST("/login/verify", sc.VerifyTwoPhase)
 	group.POST("/logout", sc.Logout)

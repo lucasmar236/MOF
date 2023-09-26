@@ -12,7 +12,7 @@ type ForgotRequest struct {
 }
 
 type ForgetUseCase interface {
-	CreateTwoPhaseCode(message string, pass string, to string, from string, expiry time.Duration) error
+	CreateTwoPhaseCode(c context.Context, pass string, to string, from string, expiry time.Duration) error
 	VerifyTwoPhaseCode(c context.Context, code string) (string, error)
 	PutUser(c context.Context, user *User) error
 	GetUserByEmail(c context.Context, email string) (User, error)

@@ -14,7 +14,7 @@ type SignupUseCase struct {
 	timeout time.Duration
 }
 
-func NewSignUseCase(userRepository domain.UserRepository, timeout time.Duration) *SignupUseCase {
+func NewSignUseCase(userRepository domain.UserRepository, timeout time.Duration) domain.SignupUseCase {
 	return &SignupUseCase{
 		user:    userRepository,
 		timeout: timeout,
@@ -44,8 +44,10 @@ func (su *SignupUseCase) CreateAccessToken(user *domain.User, secret string, exp
 }
 
 func (su *SignupUseCase) CreateTwoPhaseCode(c context.Context, from string, email string, expiry time.Duration) error {
+	ctx, cancel := context.WithTimeout(c, su.timeout)
+	defer cancel()
 	code := rand.Intn(999999-100000) + 100000
-	err := su.user.SetKey(c, strconv.Itoa(code), email, "Signup", expiry)
+	err := su.user.SetKey(ctx, strconv.Itoa(code), email, "Signup", expiry)
 	if err != nil {
 		return err
 	}
@@ -53,11 +55,13 @@ func (su *SignupUseCase) CreateTwoPhaseCode(c context.Context, from string, emai
 }
 
 func (su *SignupUseCase) VerifyTwoPhaseCode(c context.Context, code string) (string, error) {
-	email, err := su.user.GetKey(c, code, "Signup")
+	ctx, cancel := context.WithTimeout(c, su.timeout)
+	defer cancel()
+	email, err := su.user.GetKey(ctx, code, "Signup")
 	if err != nil {
 		return "", err
 	} else {
-		err := su.user.DeleteKey(c, code, "Signup")
+		err := su.user.DeleteKey(ctx, code, "Signup")
 		if err != nil {
 			return "", err
 		} else {

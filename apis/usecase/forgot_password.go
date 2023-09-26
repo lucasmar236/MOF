@@ -14,7 +14,7 @@ type ForgotUseCase struct {
 	timeout time.Duration
 }
 
-func NewForgotUseCase(user domain.UserRepository, timeout time.Duration) *ForgotUseCase {
+func NewForgotUseCase(user domain.UserRepository, timeout time.Duration) domain.ForgetUseCase {
 	return &ForgotUseCase{
 		user:    user,
 		timeout: timeout,
@@ -22,8 +22,10 @@ func NewForgotUseCase(user domain.UserRepository, timeout time.Duration) *Forgot
 }
 
 func (fu *ForgotUseCase) CreateTwoPhaseCode(c context.Context, pass string, to string, from string, expiry time.Duration) error {
+	ctx, cancel := context.WithTimeout(c, fu.timeout)
+	defer cancel()
 	code := rand.Intn(999999-100000) + 100000
-	err := fu.user.SetKey(c, strconv.Itoa(code), fmt.Sprint(to, " ", pass), "Forgot", expiry)
+	err := fu.user.SetKey(ctx, strconv.Itoa(code), fmt.Sprint(to, " ", pass), "Forgot", expiry)
 	if err != nil {
 		return err
 	}
@@ -31,11 +33,13 @@ func (fu *ForgotUseCase) CreateTwoPhaseCode(c context.Context, pass string, to s
 }
 
 func (fu *ForgotUseCase) VerifyTwoPhaseCode(c context.Context, code string) (string, error) {
-	email, err := fu.user.GetKey(c, code, "Forgot")
+	ctx, cancel := context.WithTimeout(c, fu.timeout)
+	defer cancel()
+	email, err := fu.user.GetKey(ctx, code, "Forgot")
 	if err != nil {
 		return "", err
 	} else {
-		err := fu.user.DeleteKey(c, code, "Forgot")
+		err := fu.user.DeleteKey(ctx, code, "Forgot")
 		if err != nil {
 			return "", err
 		} else {

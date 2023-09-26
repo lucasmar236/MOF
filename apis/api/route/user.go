@@ -14,6 +14,6 @@ import (
 
 func NewUserRouter(env *infrastructure.Env, timeout time.Duration, cache *redis.Client, email *gomail.Dialer, db *gorm.DB, group *gin.RouterGroup) {
 	ur := repository.NewUserRepository(db, cache, email)
-	uc := &controller.UserController{UserUserCase: *usecase.NewUserUsecase(ur, timeout), Env: env}
+	uc := &controller.UserController{UserUserCase: usecase.NewUserUsecase(ur, timeout), Env: env}
 	group.GET("/", uc.GetAll)
 }

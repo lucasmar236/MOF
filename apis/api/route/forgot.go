@@ -14,7 +14,7 @@ import (
 
 func NewForgotRouter(env *infrastructure.Env, timeout time.Duration, cache *redis.Client, email *gomail.Dialer, db *gorm.DB, group *gin.RouterGroup) {
 	ur := repository.NewUserRepository(db, cache, email)
-	fc := &controller.ForgotController{ForgotUseCase: *usecase.NewForgotUseCase(ur, timeout), Env: env}
+	fc := &controller.ForgotController{ForgotUseCase: usecase.NewForgotUseCase(ur, timeout), Env: env}
 	group.PUT("/forgot", fc.ForgotPassword)
 	group.POST("/forgot/verify", fc.VerifyTwoPhase)
 }

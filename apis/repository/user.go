@@ -35,6 +35,7 @@ func (ur *userRepository) Post(c context.Context, user *domain.User) error {
 func (ur *userRepository) GetId(c context.Context, id int64) (user domain.User, err error) {
 	return user, ur.db.WithContext(c).Where("id = ?", id).First(&user).Error
 }
+
 func (ur *userRepository) GetEmail(c context.Context, email string) (user domain.User, err error) {
 	return user, ur.db.WithContext(c).Where("email = ?", email).First(&user).Error
 }

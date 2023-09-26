@@ -5,14 +5,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lucasmar236/MOF/domain"
 	"github.com/lucasmar236/MOF/infrastructure"
-	"github.com/lucasmar236/MOF/usecase"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"time"
 )
 
 type LoginController struct {
-	LoginUseCase usecase.LoginUseCase
+	LoginUseCase domain.LoginUseCase
 	Env          *infrastructure.Env
 }
 

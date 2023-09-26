@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lucasmar236/MOF/domain"
 	"github.com/lucasmar236/MOF/infrastructure"
-	"github.com/lucasmar236/MOF/usecase"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"strings"
@@ -14,7 +13,7 @@ import (
 )
 
 type ForgotController struct {
-	ForgotUseCase usecase.ForgotUseCase
+	ForgotUseCase domain.ForgetUseCase
 	Env           *infrastructure.Env
 }
 
