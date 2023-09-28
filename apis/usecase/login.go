@@ -30,7 +30,7 @@ func (lu *LoginUseCase) GetUserByUsername(c context.Context, username string) (d
 func (lu *LoginUseCase) GetUserByEmail(c context.Context, username string) (domain.User, error) {
 	ctx, cancel := context.WithTimeout(c, lu.timeout)
 	defer cancel()
-	return lu.user.GetUsername(ctx, username)
+	return lu.user.GetEmail(ctx, username)
 }
 
 func (lu *LoginUseCase) CreateAccessToken(user *domain.User, secret string, expiry int) (accessToken string, err error) {
