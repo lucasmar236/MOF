@@ -38,12 +38,12 @@ func (pu *PrivateChatController) Post(c *gin.Context) {
 
 	chat.Peer1 = user.ID
 
-	err = pu.PrivateChatUsaCase.Post(c, chat)
+	code, err := pu.PrivateChatUsaCase.Post(c, chat)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	} else {
-		c.JSON(http.StatusCreated, gin.H{"message": "chat created"})
+		c.JSON(http.StatusCreated, gin.H{"chat": code})
 		return
 	}
 }

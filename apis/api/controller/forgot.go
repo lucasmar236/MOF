@@ -1,6 +1,5 @@
 package controller
 
-import "C"
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"

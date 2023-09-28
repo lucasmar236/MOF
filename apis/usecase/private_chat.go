@@ -22,11 +22,11 @@ func NewPrivateChatUseCase(private domain.ChatPrivateRepository, user domain.Use
 	}
 }
 
-func (pu *PrivateChatUseCase) Post(c context.Context, chat domain.PrivateChat) error {
+func (pu *PrivateChatUseCase) Post(c context.Context, chat domain.PrivateChat) (string, error) {
 	chat.Hash = utils.RandomHash(16)
 	ctx, cancel := context.WithTimeout(c, pu.timeout)
 	defer cancel()
-	return pu.privateChat.Post(ctx, chat)
+	return chat.Hash, pu.privateChat.Post(ctx, chat)
 }
 
 func (pu *PrivateChatUseCase) GetUserByUsername(c context.Context, username string) (domain.User, error) {

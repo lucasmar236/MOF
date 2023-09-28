@@ -32,7 +32,7 @@ type ChatPrivateRepository interface {
 }
 
 type ChatPrivateUseCase interface {
-	Post(c context.Context, chat PrivateChat) error
+	Post(c context.Context, chat PrivateChat) (string, error)
 	CreateTokenAccess(c context.Context, chat string, username string, expiry time.Duration) (string, error)
 	VerifyTokenAccess(c context.Context, key string) (string, error)
 	GetUserByUsername(c context.Context, username string) (User, error)
