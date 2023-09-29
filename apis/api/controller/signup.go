@@ -5,14 +5,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lucasmar236/MOF/domain"
 	"github.com/lucasmar236/MOF/infrastructure"
-	"github.com/lucasmar236/MOF/usecase"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"time"
 )
 
 type SignupController struct {
-	SignupUseCase usecase.SignupUseCase
+	SignupUseCase domain.SignupUseCase
 	Env           *infrastructure.Env
 }
 
@@ -100,5 +99,5 @@ func (sc *SignupController) VerifyTwoPhase(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.TwoPhaseResponse{AccessToken: token})
+	c.JSON(http.StatusCreated, domain.TwoPhaseResponse{AccessToken: token})
 }

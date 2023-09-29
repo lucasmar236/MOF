@@ -11,7 +11,7 @@ type UserUseCase struct {
 	timeout time.Duration
 }
 
-func NewUserUsecase(userRepository domain.UserRepository, timeout time.Duration) *UserUseCase {
+func NewUserUsecase(userRepository domain.UserRepository, timeout time.Duration) domain.UserUseCase {
 	return &UserUseCase{
 		user:    userRepository,
 		timeout: timeout,

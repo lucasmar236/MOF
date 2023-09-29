@@ -21,7 +21,8 @@ type SignupResponse struct {
 type SignupUseCase interface {
 	Post(c context.Context, user *User) error
 	GetUserByEmail(c context.Context, email string) (User, error)
+	GetUserByUsername(c context.Context, username string) (User, error)
 	CreateAccessToken(user *User, secret string, expiry int) (accessToken string, err error)
-	CreateTwoPhaseCode(message string, to string, from string, expiry time.Duration) error
+	CreateTwoPhaseCode(c context.Context, to string, from string, expiry time.Duration) error
 	VerifyTwoPhaseCode(c context.Context, code string) (string, error)
 }

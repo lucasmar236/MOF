@@ -19,6 +19,7 @@ func NewDbConn(env *Env) *gorm.DB {
 	}
 
 	db.AutoMigrate(domain.User{})
-
+	db.AutoMigrate(domain.Contact{})
+	db.AutoMigrate(domain.PrivateChat{})
 	return db
 }

@@ -1,12 +1,13 @@
 import React from "react";
-
-
+import FormLogin from "../../components/private/login/formLogin";
 function Login () {
 
     return(
-        <h1>
-            Pagina de Login
-        </h1>
+        <>
+            <div>
+                <FormLogin/>
+            </div>
+        </>
     )
 }
 

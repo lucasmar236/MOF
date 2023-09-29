@@ -5,14 +5,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lucasmar236/MOF/domain"
 	"github.com/lucasmar236/MOF/infrastructure"
-	"github.com/lucasmar236/MOF/usecase"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"time"
 )
 
 type LoginController struct {
-	LoginUseCase usecase.LoginUseCase
+	LoginUseCase domain.LoginUseCase
 	Env          *infrastructure.Env
 }
 
@@ -77,4 +76,14 @@ func (lc *LoginController) VerifyTwoPhase(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domain.TwoPhaseResponse{AccessToken: token})
+}
+
+func (lc *LoginController) Logout(c *gin.Context) {
+	token := c.GetHeader("Authorization")
+	err := lc.LoginUseCase.Logout(c, token, lc.Env.AccessTime)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusNoContent, "")
 }
