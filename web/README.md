@@ -1,8 +1,12 @@
-# Getting Started with Create React App
+# 🇧🇷 Documentação sobre arquitetura/organização da web
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Esta parte do projeto consiste apenas na documentação da arquitetura/organização da aplicação na web, demonstrando como foram sepradas e montadas assim como o que cada pasta contém,os comandos para iniciar a aplicação podem ser encontrados no Readme geral da aplicação.
 
-## Available Scripts
+## Clean Code
+
+Clean Code é uma filosofia de desenvolvimento cuja o principal objetivo é aplicar técnicas simples que visam facilitar a escrita e leitura de um código, tornando-o de fácil compreensão e revelando a sua real intenção.
+
+### Como esta organização a parte web
 
 In the project directory, you can run:
 
@@ -14,20 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 
 
 ### `npm run eject`
 
@@ -44,3 +35,6 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+# 🇺🇸 Documentation about architecture and organization from web

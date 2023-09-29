@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import {Button, Card, Col, Form, Row} from "react-bootstrap";
-import {Link} from "react-router-dom";
-import {RiLock2Line,RiUser3Line} from "react-icons/ri"
-import {SendLogin} from "../../../utils/functions/allFunctionsSend";
+import {Link, useNavigate} from "react-router-dom";
+import {RiAtLine, RiLock2Line} from "react-icons/ri"
+import {SendLogin, verifyInputs} from "../../../utils/functions/allFunctionsSend";
 import {useAppDispatch} from "../../../../services/hooks";
 import {requestLogin} from "../../../../services/redux/authentication/userSlice";
 import {CardLayout} from "../../shared/cardLayout";
@@ -11,6 +11,10 @@ function FormLogin(){
     const[email_User,setEmail_User] = useState("")
     const [password,setPassword] = useState("")
     const [validated, setValidated] = useState(false);
+
+
+    const navigate = useNavigate()
+
     const dispatch = useAppDispatch()
 
     const send = (event:any) =>{
@@ -19,11 +23,11 @@ function FormLogin(){
             password:password
         }
         if((email_User && password) === ""){
-            event.preventDefault();
-            event.stopPropagation();
+            verifyInputs(event)
             setValidated(true);
         }else {
             dispatch(requestLogin(userLogin))
+            navigate("/two-factors", {state:"login"})
         }
     }
 
@@ -34,7 +38,7 @@ function FormLogin(){
                     <Form style={{marginTop:"30px",marginLeft:"10px",marginRight:"10px"}} onSubmit={send} noValidate validated={validated}>
                         <Form.Group className="mb-3" controlId="formGroupEmail">
                             <Form.Label>
-                                <RiUser3Line style={{marginRight:"10px"}}/>Username/Email
+                                <RiAtLine style={{marginRight:"10px"}}/>Username/Email
                             </Form.Label>
                             <Form.Control type="text" placeholder="Enter your email or username"
                                           onChange={(e)=> setEmail_User(e.target.value)}

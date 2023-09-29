@@ -2,13 +2,22 @@ import React, {useState} from "react";
 import {CardLayout} from "../../shared/cardLayout";
 import lock from "../../../../assets/imgs/lock.png"
 import {Button, Col, Form, Row} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import InputFactors from "./inputFactors";
 function FormTwoFactor(){
+
+    const location = useLocation()
 
     const [code,setCode] = useState("")
 
     const sendCode = () =>{
+        if(location.state === "forgotPassword"){
+            console.log("forgotPassword")
+        }else if(location.state === "create-account"){
+            console.log("create-account")
+        }else{
+            console.log("Login")
+        }
         console.log(code)
     }
 
