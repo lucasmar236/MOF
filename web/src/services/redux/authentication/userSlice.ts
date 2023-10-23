@@ -20,12 +20,12 @@ const initialState: data = {
     }
 }
 
-export const requests = createAsyncThunk("userSlice/request", async ()=>{
-    const userRepo = new UserRepositoryImpl()
-    const userSerivce = new UsersServiceImpl(userRepo)
-    const userList = await userSerivce.GetUser()
-    return userList
-})
+// export const requests = createAsyncThunk("userSlice/request", async ()=>{
+//     const userRepo = new UserRepositoryImpl()
+//     const userSerivce = new UsersServiceImpl(userRepo)
+//     const userList = await userSerivce.GetUser()
+//     return userList
+// })
 
 export const requestLogin = createAsyncThunk("userSlice/request",async(data:Object)=>{
     const userRepo = new UserRepositoryImpl()

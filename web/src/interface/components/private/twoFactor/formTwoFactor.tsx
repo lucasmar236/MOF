@@ -4,7 +4,12 @@ import lock from "../../../../assets/imgs/lock.png"
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {Link, useLocation} from "react-router-dom";
 import InputFactors from "./inputFactors";
+import {useAppDispatch} from "../../../../services/hooks";
+import {requestCodeVerify} from "../../../../services/redux/authentication/codeVerifySLice";
 function FormTwoFactor(){
+
+    const dispatch = useAppDispatch()
+
 
     const location = useLocation()
 
@@ -18,6 +23,10 @@ function FormTwoFactor(){
         }else{
             console.log("Login")
         }
+        let codeVerify = {
+            code: code
+        }
+        dispatch(requestCodeVerify(codeVerify))
         console.log(code)
     }
 

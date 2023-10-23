@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Card, Col, Form, Row} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {RiAtLine, RiLock2Line} from "react-icons/ri"
@@ -6,7 +6,12 @@ import {SendLogin, verifyInputs} from "../../../utils/functions/allFunctionsSend
 import {useAppDispatch} from "../../../../services/hooks";
 import {requestLogin} from "../../../../services/redux/authentication/userSlice";
 import {CardLayout} from "../../shared/cardLayout";
+import {useSelector} from "react-redux";
 function FormLogin(){
+
+    const {success} = useSelector((state:any)  =>({
+        success: state.userSlice.success
+    }))
 
     const[email_User,setEmail_User] = useState("")
     const [password,setPassword] = useState("")
@@ -19,7 +24,7 @@ function FormLogin(){
 
     const send = (event:any) =>{
         let userLogin = {
-            email_username: email_User,
+            login: email_User,
             password:password
         }
         if((email_User && password) === ""){
@@ -30,6 +35,14 @@ function FormLogin(){
             navigate("/two-factors", {state:"login"})
         }
     }
+
+    console.log(success)
+
+    // useEffect(()=>{
+    //     if(success ==="Invalid Credentials"){
+    //         navigate("/two-factors", {state:"login"})
+    //     }
+    // },[])
 
 
     return(

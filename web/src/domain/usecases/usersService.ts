@@ -1,6 +1,4 @@
-import UserClass from "../entities/userRegister";
 import UserRepository from "../repositories/userRepository";
-import UserLogin from "../entities/userLogin";
 
 export default class UsersServiceImpl {
     userRepo: UserRepository
@@ -9,11 +7,19 @@ export default class UsersServiceImpl {
         this.userRepo = ir
     }
 
-    async GetUser(): Promise<UserClass[]>{
-        return this.userRepo.GetUser()
-    }
+    // async GetUser(): Promise<UserClass[]>{
+    //     return this.userRepo.GetUser()
+    // }
 
     async PostUserLogin(data:Object){
         return this.userRepo.PostUserLogin(data)
+    }
+
+    async PostUserCreate(data: Object){
+        return this.userRepo.PostUserCreate(data)
+    }
+
+    async PostCodeVerify(data: Object){
+        return this.userRepo.PostCodeVerify(data)
     }
 }

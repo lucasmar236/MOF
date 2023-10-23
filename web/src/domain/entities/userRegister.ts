@@ -1,15 +1,19 @@
 export default class UserClass {
-    name: string
-    email: string
-    password: string
-    lastname: string
-    cellphone: string
+    FirstName: string
+    LastName: string
+    Password: string
+    Email: string
+    Username: string
+    NumberPhone: string
+    Birth: string
 
-    constructor(name:string,email:string,password:string,lastname:string,cellphone:string){
-        this.name = name
-        this.email = email
-        this.lastname = lastname
-        this.password = password
-        this.cellphone = cellphone
+    constructor(FirstName:string,LastName:string,Password:string,Email:string,Username:string,NumberPhone:string,Birth:string){
+        this.FirstName = FirstName
+        this.LastName = LastName
+        this.Password = Password
+        this.Email = Email
+        this.Username = Username
+        this.NumberPhone = NumberPhone
+        this.Birth = Birth
     }
 }

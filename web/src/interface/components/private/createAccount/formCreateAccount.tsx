@@ -3,56 +3,80 @@ import {CardLayout} from "../../shared/cardLayout";
 import {Button, Col, Form, Modal, Row} from "react-bootstrap";
 import {RiLock2Line, RiPhoneLine, RiAtLine, RiMailLine, RiUserLine, RiCake2Line,RiUserAddLine} from "react-icons/ri";
 import {Link} from "react-router-dom";
+import {useAppDispatch} from "../../../../services/hooks";
+import {requestCreate} from "../../../../services/redux/createAccount/userCreateSlice";
 
 function FormCreateAccount (){
 
+    const dispatch = useAppDispatch()
+
+
     const [show, setShow] = useState(false);
+    const [firstName,setFirstName] = useState("")
+    const [lastName,setLastName] = useState("")
+    const [password,setPassword] = useState("")
+    const [email,setEmail] = useState("")
+    const [userName,setUserName] = useState("")
+    const [numberPhone,setNumberPhone] = useState("")
+    const [birth,setBirth] = useState("")
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const handleSendRegister = () => {
+        let userRegister = {
+            first_name: firstName,
+            last_name: lastName,
+            password: password,
+            email: email,
+            username: userName,
+            number_phone: numberPhone,
+        }
+            dispatch(requestCreate(userRegister))
+    }
 
     return(
         <>
             <CardLayout title="Register" text="To use our system, please register with your personal information!" imagem="">
                 <div>
-                    <Form  style={{marginTop:"10px",marginLeft:"10px",marginRight:"10px"}} onSubmit={()=> console.log("ops")} noValidate>
+                    <Form  style={{marginTop:"10px",marginLeft:"10px",marginRight:"10px"}} noValidate>
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridEmail">
                                 <Form.Label><RiUserLine style={{marginRight:"10px"}}/>Name</Form.Label>
-                                <Form.Control type="name" placeholder="Name" />
+                                <Form.Control type="name" placeholder="Name" onChange={(e)=>setFirstName(e.target.value)}/>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridPassword">
                                 <Form.Label><RiUserAddLine style={{marginRight:"10px"}}/>Lastname</Form.Label>
-                                <Form.Control type="lastname" placeholder="Lastname" />
+                                <Form.Control type="lastname" placeholder="Lastname" onChange={(e)=> setLastName(e.target.value)}/>
                             </Form.Group>
                         </Row>
 
                         <Row>
                             <Form.Group className="mb-3"  as={Col} controlId="formGridAddress1">
                                 <Form.Label><RiAtLine style={{marginRight:"10px"}}/>Username</Form.Label>
-                                <Form.Control placeholder="Username"  type="username"/>
+                                <Form.Control placeholder="Username"  type="username" onChange={(e)=> setUserName(e.target.value)}/>
                             </Form.Group>
                             <Form.Group className="mb-3"  as={Col} controlId="formGridAddress2">
                                 <Form.Label><RiMailLine style={{marginRight:"10px"}}/>Email</Form.Label>
-                                <Form.Control placeholder="Email" type="email" />
+                                <Form.Control placeholder="Email" type="email" onChange={(e)=> setEmail(e.target.value)}/>
                             </Form.Group>
                         </Row>
 
                         <Form.Group className="mb-3" controlId="formGridAddress2">
                             <Form.Label><RiLock2Line style={{marginRight:"10px"}}/>Password</Form.Label>
-                            <Form.Control placeholder="Password" type="password" />
+                            <Form.Control placeholder="Password" type="password" onChange={(e)=> setPassword(e.target.value)}/>
                         </Form.Group>
 
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridEmail">
                                 <Form.Label><RiPhoneLine style={{marginRight:"10px"}}/>Cell phone</Form.Label>
-                                <Form.Control type="phone" placeholder="Enter your cell phone" />
+                                <Form.Control type="phone" placeholder="Enter your cell phone" onChange={(e) => setNumberPhone(e.target.value)}/>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridPassword">
                                 <Form.Label><RiCake2Line style={{marginRight:"10px"}}/>Date of birth</Form.Label>
-                                <Form.Control type="date" placeholder="Date of birth" />
+                                <Form.Control type="date" placeholder="Date of birth" onChange={(e) => setBirth(e.target.value)}/>
                             </Form.Group>
                         </Row>
 
@@ -71,7 +95,7 @@ function FormCreateAccount (){
 
 
                         <div className="d-grid gap-2" style={{marginTop:"20px",marginBottom:"20px"}}>
-                            <Button type="submit" style={{backgroundColor:"#C99A6D",borderColor:"#C99A6D"}} >
+                            <Button onClick={() => handleSendRegister()} style={{backgroundColor:"#C99A6D",borderColor:"#C99A6D"}} >
                                 Create my account
                             </Button>
                         </div>
