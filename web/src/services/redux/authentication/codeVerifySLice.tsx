@@ -8,6 +8,7 @@ interface data {
     codeVerify: Object
     successCode: string
     errorCode: string
+    loadingCode: boolean
 }
 
 const initialState: data = {
@@ -15,7 +16,8 @@ const initialState: data = {
         code: ""
     },
     successCode: "",
-    errorCode: ""
+    errorCode: "",
+    loadingCode:false
 }
 
 export const requestCodeVerify = createAsyncThunk("userCodeVerify/request",async(data:Object)=>{
@@ -33,11 +35,17 @@ export const codeVerifySlice = createSlice({
         builder.addCase(requestCreate.fulfilled,(state, action) =>({
             ...state,
             codeVerify:action.payload,
+            loadingCode:false,
             succesCode: "Usuário logado com sucesso!"
         }))
         builder.addCase(requestCreate.rejected,(state, action) =>({
             ...state,
-            errorCode:"Erro!"
+            errorCode:"Erro ao verificar codigo!",
+            loadingCode:false,
+        }))
+        builder.addCase(requestCreate.pending,(state,action) => ({
+            ...state,
+            loadingCode:true
         }))
     }
 })

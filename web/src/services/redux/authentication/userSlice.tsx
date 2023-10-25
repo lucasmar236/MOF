@@ -9,6 +9,9 @@ import {RootState} from "../../configureStore";
 interface data {
     userList: Array<User>
     sendUser: Object
+    userSuccess: string
+    userError: string
+    userLoading: boolean
 }
 
 const initialState: data = {
@@ -17,7 +20,10 @@ const initialState: data = {
         username:"",
         email:"",
         password:""
-    }
+    },
+    userSuccess: "",
+    userError: "",
+    userLoading:false
 }
 
 // export const requests = createAsyncThunk("userSlice/request", async ()=>{
@@ -45,7 +51,20 @@ export const userSlice = createSlice({
         // }))
         builder.addCase(requestLogin.fulfilled,(state,action)=>({
             ...state,
-            sendUser:action.payload
+            sendUser:action.payload,
+            userLoading:false,
+            userSuccess:"Usuário Logado com sucesso!"
+        }))
+        builder.addCase(requestLogin.rejected,(state,action)=>({
+            ...state,
+            userLoading:false,
+            userError:"Erro ao logar, verifique suas informações!"
+        }))
+        builder.addCase(requestLogin.pending,(state,action) => ({
+            ...state,
+            userLoading:true,
+            userSuccess:"",
+            userError:""
         }))
     }
 })

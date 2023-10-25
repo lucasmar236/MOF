@@ -8,6 +8,9 @@ import {RootState} from "../../configureStore";
 interface data {
     userCreate: Array<UserClass>
     sendUserCreate: Object
+    sendUserCreateSuccess: string
+    sendUserCreateError: string
+    sendUserCreateLoading: boolean
 }
 
 const initialState: data = {
@@ -20,7 +23,10 @@ const initialState: data = {
         UserName:"",
         NumberPhone:"",
         Birth:""
-    }
+    },
+    sendUserCreateSuccess:"",
+    sendUserCreateError: "",
+    sendUserCreateLoading: false
 }
 
 export const requestCreate = createAsyncThunk("userCreate/request",async(data:Object)=>{
@@ -41,7 +47,20 @@ export const userCreateSlice = createSlice({
         // }))
         builder.addCase(requestCreate.fulfilled,(state,action)=>({
             ...state,
-            sendUserCreate:action.payload
+            sendUserCreate:action.payload,
+            sendUserCreateSuccess:"",
+            sendUserCreateLoading:false
+        }))
+        builder.addCase(requestCreate.rejected,(state,action)=>({
+            ...state,
+            sendUserCreateLoading:false,
+            sendUserCreateError:"",
+        }))
+        builder.addCase(requestCreate.pending,(state,action)=>({
+            ...state,
+            sendUserCreateLoading:true,
+            sendUserCreateSuccess:"",
+            sendUserCreateError:""
         }))
     }
 })

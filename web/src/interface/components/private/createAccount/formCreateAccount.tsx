@@ -20,6 +20,8 @@ function FormCreateAccount (){
     const [numberPhone,setNumberPhone] = useState("")
     const [birth,setBirth] = useState("")
 
+    const [invalidForm,setInvalidForm] = useState(false)
+
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -39,11 +41,14 @@ function FormCreateAccount (){
         <>
             <CardLayout title="Register" text="To use our system, please register with your personal information!" imagem="">
                 <div>
-                    <Form  style={{marginTop:"10px",marginLeft:"10px",marginRight:"10px"}} noValidate>
+                    <Form  style={{marginTop:"10px",marginLeft:"10px",marginRight:"10px"}} noValidate validated={invalidForm}>
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridEmail">
                                 <Form.Label><RiUserLine style={{marginRight:"10px"}}/>Name</Form.Label>
                                 <Form.Control type="name" placeholder="Name" onChange={(e)=>setFirstName(e.target.value)}/>
+                                <Form.Control.Feedback type="invalid">
+                                    Please insert your FirstName!
+                                </Form.Control.Feedback>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridPassword">

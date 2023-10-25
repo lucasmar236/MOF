@@ -1,21 +1,24 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Col, Form, Row} from "react-bootstrap";
+import {Alert, Button, Card, Col, Form, Row} from "react-bootstrap";
 import {Link, useNavigate} from "react-router-dom";
 import {RiAtLine, RiLock2Line} from "react-icons/ri"
 import {SendLogin, verifyInputs} from "../../../utils/functions/allFunctionsSend";
 import {useAppDispatch} from "../../../../services/hooks";
-import {requestLogin} from "../../../../services/redux/authentication/userSlice";
+import {requestLogin, userSlice} from "../../../../services/redux/authentication/userSlice";
 import {CardLayout} from "../../shared/cardLayout";
 import {useSelector} from "react-redux";
 function FormLogin(){
 
-    const {success} = useSelector((state:any)  =>({
-        success: state.userSlice.success
+    const {userSuccess,userLoading,userError} = useSelector((state:any)  =>({
+        userSuccess: state.userSlice.userSuccess,
+        userLoading: state.userSlice.userLoading,
+        userError : state.userSlice.userError
     }))
 
     const[email_User,setEmail_User] = useState("")
     const [password,setPassword] = useState("")
     const [validated, setValidated] = useState(false);
+    const [requestInvalid,setRequestInvalid] = useState(false)
 
 
     const navigate = useNavigate()
@@ -32,23 +35,27 @@ function FormLogin(){
             setValidated(true);
         }else {
             dispatch(requestLogin(userLogin))
-            navigate("/two-factors", {state:"login"})
         }
     }
 
-    console.log(success)
-
-    // useEffect(()=>{
-    //     if(success ==="Invalid Credentials"){
-    //         navigate("/two-factors", {state:"login"})
-    //     }
-    // },[])
-
+    useEffect(() => {
+        if(userSuccess === "Usuário Logado com sucesso!"){
+            setRequestInvalid(false)
+            navigate("/two-factors", {state:"login"})
+        }
+        if(userError === "Erro ao logar, verifique suas informações!") {
+            setRequestInvalid(true)
+        }
+    }, [userSuccess,userError]);
 
     return(
-        <CardLayout title="Sing in" text="Welcome to MOF, your online chat app!" imagem="">
+        <CardLayout title="Sing in" text="Welcome to MOF, your online chat app!" imagem=""><br/>
+            {requestInvalid ?
+                <Alert variant="danger">
+                     Invalid credentials! </Alert>
+                : <></>}
                 <div>
-                    <Form style={{marginTop:"30px",marginLeft:"10px",marginRight:"10px"}} onSubmit={send} noValidate validated={validated}>
+                    <Form style={{marginTop:"30px",marginLeft:"10px",marginRight:"10px"}} noValidate validated={validated}>
                         <Form.Group className="mb-3" controlId="formGroupEmail">
                             <Form.Label>
                                 <RiAtLine style={{marginRight:"10px"}}/>Username/Email
@@ -84,7 +91,7 @@ function FormLogin(){
                             </Row>
                         </div><br/>
                         <div className="d-grid gap-2" style={{marginTop:"20px",marginBottom:"20px"}}>
-                            <Button type="submit" style={{backgroundColor:"#C99A6D",borderColor:"#C99A6D"}} >
+                            <Button style={{backgroundColor:"#C99A6D",borderColor:"#C99A6D"}} onClick={send}>
                                 Login
                             </Button>
                         </div>
