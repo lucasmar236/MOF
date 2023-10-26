@@ -20,8 +20,16 @@ type PrivateChatRequest struct {
 	Contact uint `json:"contact"`
 }
 
+type PrivateChatResponse struct {
+	Chat string `json:"chat"`
+}
+
 type AccessChatRequest struct {
 	Chat string `json:"chat"`
+}
+
+type PrivateChatResponseTwoPhase struct {
+	Code string `json:"code"`
 }
 
 type ChatPrivateRepository interface {

@@ -16,7 +16,11 @@ type User struct {
 	NumberPhone string         `db:"number_phone" json:"number_phone"`
 	CreatedAt   time.Time      `json:"created_at"`
 	UpdatedAt   time.Time      `json:"updated_at"`
-	DeletedAt   gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index"`
+	DeletedAt   gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index" swaggerignore:"true"`
+}
+
+type UsersReponse struct {
+	Users []User `json:"users"`
 }
 
 type UserRepository interface {

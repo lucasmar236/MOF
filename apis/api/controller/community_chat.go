@@ -15,6 +15,17 @@ type CommunityChatController struct {
 	Chats                map[string]bool
 }
 
+// @Summary Criar um chat em comunidade
+// @Schemes
+// @Description Criar um chat em comunidade
+// @Tags Chat em comunidade
+// @Accept json
+// @Produce json
+// @Param	Corpo	body	domain.CommunityChatRequest	true	"Dados da comunidade"
+// @Success	201	{object} domain.CommunityChatResponse "Sucesso"
+// @Failure 400 {object} domain.Response "Informações inválidas"
+// @Failure 500 {object} domain.Response "Erro interno"
+// @Router /community_chat [post]
 func (pu *CommunityChatController) Post(c *gin.Context) {
 	var (
 		request domain.CommunityChatRequest
@@ -23,7 +34,7 @@ func (pu *CommunityChatController) Post(c *gin.Context) {
 
 	err := c.ShouldBind(&request)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
 		return
 	}
 
@@ -31,7 +42,7 @@ func (pu *CommunityChatController) Post(c *gin.Context) {
 
 	user, err := pu.CommunityChatUsaCase.GetUserByUsername(c, value)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "No found user"})
+		c.JSON(http.StatusBadRequest, domain.Response{Message: "No found user"})
 		return
 	}
 
@@ -40,7 +51,7 @@ func (pu *CommunityChatController) Post(c *gin.Context) {
 
 	code, err := pu.CommunityChatUsaCase.Post(c, chat)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
 		return
 	}
 
@@ -54,14 +65,25 @@ func (pu *CommunityChatController) Post(c *gin.Context) {
 
 	err = pu.CommunityChatUsaCase.PostContact(c, contacts)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"chat": code})
+	c.JSON(http.StatusCreated, domain.CommunityChatResponse{Chat: code})
 	return
 }
 
+// @Summary Solicita acesso a um chat em comunidade
+// @Schemes
+// @Description Solicita acesso a um chat em comunidade
+// @Tags Chat em comunidade
+// @Accept json
+// @Produce json
+// @Param	Corpo	body	domain.AccessChatRequest	true	"Dados da verificação"
+// @Success	200	{object} domain.CommunityChatResponseTwoPhase "Sucesso"
+// @Failure 400 {object} domain.Response "Informações inválidas"
+// @Failure 500 {object} domain.Response "Erro interno"
+// @Router /community_chat/access [post]
 func (pu *CommunityChatController) AccessChat(group *gin.RouterGroup, cache *redis.Client) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var request domain.AccessChatRequest
@@ -91,7 +113,7 @@ func (pu *CommunityChatController) AccessChat(group *gin.RouterGroup, cache *red
 				go r.Run()
 				pu.Chats[request.Chat] = true
 			}
-			c.JSON(http.StatusOK, gin.H{"code": code})
+			c.JSON(http.StatusOK, domain.CommunityChatResponseTwoPhase{Code: code})
 			return
 		}
 	}

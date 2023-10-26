@@ -15,24 +15,36 @@ type SignupController struct {
 	Env           *infrastructure.Env
 }
 
+// @Summary Realiza o cadastro do usuário
+// @Schemes
+// @Description Realiza o cadastro do usuário
+// @Tags Cadastro
+// @Accept json
+// @Produce json
+// @Param	Corpo	body	domain.SignupRequest	true	"Dados do cadastro"
+// @Success	200	{object} domain.Response "Sucesso"
+// @Failure 400 {object} domain.Response "Informações inválidas"
+// @Failure 409 {object} domain.Response "Usuário já existe"
+// @Failure 500 {object} domain.Response "Erro ao verificar codigo"
+// @Router /signup [post]
 func (sc *SignupController) Signup(c *gin.Context) {
 	var request domain.SignupRequest
 
 	err := c.ShouldBind(&request)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
 		return
 	}
 
 	_, err = sc.SignupUseCase.GetUserByEmail(c, request.Email)
 	if err == nil {
-		c.JSON(http.StatusConflict, gin.H{"message": "User already exists"})
+		c.JSON(http.StatusConflict, domain.Response{Message: "User already exists"})
 		return
 	}
 
 	_, err = sc.SignupUseCase.GetUserByUsername(c, request.Username)
 	if err == nil {
-		c.JSON(http.StatusConflict, gin.H{"message": "User already exists"})
+		c.JSON(http.StatusConflict, domain.Response{Message: "User already exists"})
 		return
 	}
 
@@ -41,7 +53,7 @@ func (sc *SignupController) Signup(c *gin.Context) {
 		bcrypt.DefaultCost,
 	)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
 		return
 	}
 
@@ -58,7 +70,7 @@ func (sc *SignupController) Signup(c *gin.Context) {
 
 	err = sc.SignupUseCase.Post(c, &user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
 		return
 	}
 
@@ -72,30 +84,42 @@ func (sc *SignupController) Signup(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "E-mail with code verification sent"})
 }
 
+// @Summary Realiza o cadastro do usuário
+// @Schemes
+// @Description Realiza o cadastro do usuário
+// @Tags Cadastro
+// @Accept json
+// @Produce json
+// @Param	Corpo	body	domain.TwoPhaseRequest	true	"Dados da verificação"
+// @Success	200	{object} domain.TwoPhaseResponse "Sucesso"
+// @Failure 400 {object} domain.Response "Código não informado"
+// @Failure 404 {object} domain.Response "Usuário não encontrado"
+// @Failure 500 {object} domain.Response "Erro ao verificar codigo"
+// @Router /signup/verify [post]
 func (sc *SignupController) VerifyTwoPhase(c *gin.Context) {
 	var request domain.TwoPhaseRequest
 
 	err := c.ShouldBind(&request)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
 		return
 	}
 
 	code, err := sc.SignupUseCase.VerifyTwoPhaseCode(c, request.Code)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "Code invalid"})
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: "Code invalid"})
 		return
 	}
 
 	user, err := sc.SignupUseCase.GetUserByEmail(c, code)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "User not found"})
+		c.JSON(http.StatusNotFound, domain.Response{Message: "User not found"})
 		return
 	}
 
 	token, err := sc.SignupUseCase.CreateAccessToken(&user, sc.Env.SecretKey, sc.Env.AccessTime)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
 		return
 	}
 

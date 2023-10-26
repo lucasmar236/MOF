@@ -13,19 +13,41 @@ type ContactController struct {
 	Env            *infrastructure.Env
 }
 
+// @Summary Lista todos os contatos do usuário
+// @Schemes
+// @Description  Lista todos os contatos do usuário
+// @Tags Contatos
+// @Accept json
+// @Produce json
+// @Param    ID   path  string  true  "ID do usuário"
+// @Success	201	{object} domain.ContactResponse "Sucesso"
+// @Failure 500 {object} domain.Response "Erro interno"
+// @Router /users/:id/contacts [get]
 func (cc *ContactController) GetAll(c *gin.Context) {
 	users, err := cc.ContactUseCase.GetAll(c, c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
 	} else {
-		c.JSON(http.StatusOK, gin.H{"contacts": users})
+		c.JSON(http.StatusOK, domain.ContactResponse{Contacts: users})
 	}
 }
 
+// @Summary Adiciona contato ao usuário
+// @Schemes
+// @Description  Adiciona contato ao usuário
+// @Tags Contatos
+// @Accept json
+// @Produce json
+// @Param    ID   path  string  true  "ID do usuário"
+// @Param	Corpo	body	domain.Contact	true	"Dados do contato"
+// @Success	201	{object} domain.Response "Sucesso"
+// @Failure 400 {object} domain.Response "Informações inválidas"
+// @Failure 500 {object} domain.Response "Erro interno"
+// @Router  /users/:id/contacts [post]
 func (cc *ContactController) Post(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ID invalid"})
+		c.JSON(http.StatusBadRequest, domain.Response{Message: "ID invalid"})
 		return
 	}
 
@@ -34,34 +56,34 @@ func (cc *ContactController) Post(c *gin.Context) {
 	}
 	err = c.ShouldBind(&contact)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
 		return
 	}
 
 	if contact.IdContact == contact.IdUser {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Is not impossible add same contact to owner"})
+		c.JSON(http.StatusBadRequest, domain.Response{Message: "Is not impossible add same contact to owner"})
 		return
 	}
 
 	cont, err := cc.ContactUseCase.GetContactById(c, int64(contact.IdUser), int64(contact.IdContact))
 	if err == nil {
 		if cont.IdContact != 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Contact already exists"})
+			c.JSON(http.StatusBadRequest, domain.Response{Message: "Contact already exists"})
 			return
 		}
 	}
 
 	_, err = cc.ContactUseCase.GetUserById(c, int64(contact.IdContact))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
 		return
 	}
 
 	err = cc.ContactUseCase.Post(c, &contact)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "contact added"})
+	c.JSON(http.StatusCreated, domain.Response{Message: "contact added"})
 }
