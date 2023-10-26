@@ -2,9 +2,9 @@
 
 Esta parte do projeto consiste apenas na documentação da arquitetura/organização da aplicação na web, demonstrando como foram sepradas e montadas assim como o que cada pasta contém,os comandos para iniciar a aplicação podem ser encontrados no Readme geral da aplicação.
 
-## :pushpin: O que é Clean Code
+## :pushpin: O que é Clean Architecture
 
-Clean Code é uma filosofia de desenvolvimento cuja o principal objetivo é aplicar técnicas simples que visam facilitar a escrita e leitura de um código, tornando-o de fácil compreensão e revelando a sua real intenção.
+Clean Architecture tenta fornecer uma metodologia a ser usada na codificação, a fim de facilitar o desenvolvimento códigos, permitir uma melhor manutenção, atualização e menos dependências.Tem o objetivo de fornecer aos desenvolvedores uma maneira de organizar o código de forma que encapsule a lógica de negócios, mas mantenha-o separado do mecanismo de entrega.
 
 ## :open_file_folder: Organização a parte web
 
