@@ -22,7 +22,7 @@ function FormMenu() {
 
     return (
         <CardMenu>
-            <div style={{marginLeft:"10px", marginTop: "10px", marginBottom: "10px"}}>
+            <div style={{marginLeft:"10px", marginRight: "80px", marginTop: "10px", marginBottom: "10px"}}>
                 <Row style={{marginBottom: "20px"}}>
                     <Col>
                         <Link to="/chats"><FiArrowLeft style={firstItemStyle}/></Link>
