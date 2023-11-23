@@ -19,4 +19,5 @@ type ProfileUseCase interface {
 	PutUser(c context.Context, user *User) error
 	GetUserByUsername(c context.Context, username string) (User, error)
 	GetUserByEmail(c context.Context, email string) (User, error)
+	DeleteUser(c context.Context, user *User) error
 }

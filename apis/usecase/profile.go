@@ -35,3 +35,9 @@ func (pu *ProfileUseCase) GetUserByEmail(c context.Context, email string) (domai
 	defer cancel()
 	return pu.user.GetEmail(ctx, email)
 }
+
+func (pu *ProfileUseCase) DeleteUser(c context.Context, user *domain.User) error {
+	ctx, cancel := context.WithTimeout(c, pu.timeout)
+	defer cancel()
+	return pu.user.Delete(ctx, user)
+}

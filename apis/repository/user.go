@@ -48,6 +48,10 @@ func (ur *userRepository) Put(c context.Context, user *domain.User) error {
 	return ur.db.WithContext(c).Save(user).Error
 }
 
+func (ur *userRepository) Delete(c context.Context, user *domain.User) error {
+	return ur.db.WithContext(c).Delete(user).Error
+}
+
 func (ur *userRepository) GetKey(c context.Context, key string, prefix string) (string, error) {
 	return ur.cache.Get(c, fmt.Sprint(prefix, ":", key)).Result()
 }

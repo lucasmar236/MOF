@@ -34,6 +34,7 @@ type UserRepository interface {
 	GetUsername(c context.Context, username string) (User, error)
 	Post(c context.Context, user *User) error
 	Put(c context.Context, user *User) error
+	Delete(c context.Context, user *User) error
 }
 
 type UserUseCase interface {
