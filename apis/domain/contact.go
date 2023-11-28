@@ -31,6 +31,7 @@ type ContactRepository interface {
 	Post(c context.Context, contact *Contact) error
 	GetAll(c context.Context, user string) ([]UserContacts, error)
 	GetId(c context.Context, user int64, contact int64) (Contact, error)
+	Delete(c context.Context, contact *Contact) error
 }
 
 type ContactUseCase interface {
@@ -38,4 +39,5 @@ type ContactUseCase interface {
 	GetAll(c context.Context, user string) ([]UserContacts, error)
 	GetUserById(c context.Context, user int64) (User, error)
 	GetContactById(c context.Context, user int64, contact int64) (Contact, error)
+	Delete(c context.Context, contact *Contact) error
 }

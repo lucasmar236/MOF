@@ -43,3 +43,9 @@ func (cu ContactUseCase) GetContactById(c context.Context, user int64, contact i
 	defer cancel()
 	return cu.contact.GetId(ctx, user, contact)
 }
+
+func (cu ContactUseCase) Delete(c context.Context, contact *domain.Contact) error {
+    ctx, cancel := context.WithTimeout(c, cu.timeout)
+    defer cancel()
+    return cu.contact.Delete(ctx, contact)
+}

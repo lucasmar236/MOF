@@ -19,4 +19,5 @@ func NewContactRouter(env *infrastructure.Env, timeout time.Duration,
 	fc := &controller.ContactController{ContactUseCase: usecase.NewContactUseCase(cr, ur, timeout), Env: env}
 	group.GET("/users/:id/contacts", fc.GetAll)
 	group.POST("/users/:id/contacts", fc.Post)
+	group.DELETE("/users/:id/contacts", fc.Delete)
 }

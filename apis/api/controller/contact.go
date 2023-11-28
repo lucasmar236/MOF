@@ -61,7 +61,7 @@ func (cc *ContactController) Post(c *gin.Context) {
 	}
 
 	if contact.IdContact == contact.IdUser {
-		c.JSON(http.StatusBadRequest, domain.Response{Message: "Is not impossible add same contact to owner"})
+		c.JSON(http.StatusBadRequest, domain.Response{Message: "Is not possible add same contact to owner"})
 		return
 	}
 
@@ -86,4 +86,52 @@ func (cc *ContactController) Post(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, domain.Response{Message: "contact added"})
+}
+
+// @Summary Remove contato do usuário
+// @Schemes
+// @Description Remove contato do usuário
+// @Tags Contatos
+// @Accept json
+// @Produce json
+// @Param    ID       path    string  true    "ID do usuário"
+// @Param    ContactID   body    int64   true    "ID do contato a ser removido"
+// @Success 204 {object} domain.Response "Sucesso"
+// @Failure 400 {object} domain.Response "Informações inválidas"
+// @Failure 500 {object} domain.Response "Erro interno"
+// @Router  /users/:id/contacts [delete]
+func (cc *ContactController) Delete(c *gin.Context) {
+    userID, err := strconv.Atoi(c.Param("id"))
+    if err != nil {
+        c.JSON(http.StatusBadRequest, domain.Response{Message: "Invalid id"})
+        return
+    }
+
+    var contactID struct {
+        ContactID int64 `json:"id_contact" binding:"required"`
+    }
+    if err := c.ShouldBindJSON(&contactID); err != nil {
+        c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
+        return
+    }
+
+    // verifica se o contato existe
+    cont, err := cc.ContactUseCase.GetContactById(c, int64(userID), contactID.ContactID)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
+        return
+    }
+
+    if cont.IdContact == 0 {
+        c.JSON(http.StatusBadRequest, domain.Response{Message: "Contact not found"})
+        return
+    }
+
+    // exclui o contato
+    if err := cc.ContactUseCase.Delete(c, &cont); err != nil {
+        c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusNoContent, nil)
 }
