@@ -32,6 +32,12 @@ func (cu ContactUseCase) GetAll(c context.Context, user string) ([]domain.UserCo
 	return cu.contact.GetAll(ctx, user)
 }
 
+func (cu ContactUseCase) GetUserByUsername(c context.Context, username string) (domain.User, error) {
+	ctx, cancel := context.WithTimeout(c, cu.timeout)
+	defer cancel()
+	return cu.user.GetUsername(ctx, username)
+}
+
 func (cu ContactUseCase) GetUserById(c context.Context, user int64) (domain.User, error) {
 	ctx, cancel := context.WithTimeout(c, cu.timeout)
 	defer cancel()

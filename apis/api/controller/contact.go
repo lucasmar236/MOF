@@ -19,12 +19,19 @@ type ContactController struct {
 // @Tags Contatos
 // @Accept json
 // @Produce json
-// @Param    ID   path  string  true  "ID do usuário"
 // @Success	201	{object} domain.ContactResponse "Sucesso"
 // @Failure 500 {object} domain.Response "Erro interno"
 // @Router /users/:id/contacts [get]
 func (cc *ContactController) GetAll(c *gin.Context) {
-	users, err := cc.ContactUseCase.GetAll(c, c.Param("id"))
+	username := c.GetString("x-user-username") // pega o usuario que esta logado	
+
+	user, err := cc.ContactUseCase.GetUserByUsername(c, username) // pega os dados do usuario que esta logado
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
+		return
+	}
+
+	users, err := cc.ContactUseCase.GetAll(c, strconv.FormatUint(uint64(user.ID), 10))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
 	} else {
@@ -38,21 +45,22 @@ func (cc *ContactController) GetAll(c *gin.Context) {
 // @Tags Contatos
 // @Accept json
 // @Produce json
-// @Param    ID   path  string  true  "ID do usuário"
 // @Param	Corpo	body	domain.Contact	true	"Dados do contato"
 // @Success	201	{object} domain.Response "Sucesso"
 // @Failure 400 {object} domain.Response "Informações inválidas"
 // @Failure 500 {object} domain.Response "Erro interno"
 // @Router  /users/:id/contacts [post]
 func (cc *ContactController) Post(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	username := c.GetString("x-user-username") // pega o usuario que esta logado	
+
+	user, err := cc.ContactUseCase.GetUserByUsername(c, username) // pega os dados do usuario que esta logado
 	if err != nil {
-		c.JSON(http.StatusBadRequest, domain.Response{Message: "ID invalid"})
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
 		return
 	}
 
 	var contact = domain.Contact{
-		IdUser: uint(id),
+		IdUser: user.ID,
 	}
 	err = c.ShouldBind(&contact)
 	if err != nil {
@@ -88,24 +96,26 @@ func (cc *ContactController) Post(c *gin.Context) {
 	c.JSON(http.StatusCreated, domain.Response{Message: "contact added"})
 }
 
-// @Summary Remove contato do usuário
+// @Summary Deleta contato do usuário
 // @Schemes
-// @Description Remove contato do usuário
+// @Description Deleta contato do usuário
 // @Tags Contatos
 // @Accept json
 // @Produce json
-// @Param    ID       path    string  true    "ID do usuário"
-// @Param    ContactID   body    int64   true    "ID do contato a ser removido"
+// @Param    ContactID   body    int64   true    "UserID do contato a ser removido"
 // @Success 204 {object} domain.Response "Sucesso"
 // @Failure 400 {object} domain.Response "Informações inválidas"
+// @Failure 404 {object} domain.Response "Contato não encontrado"
 // @Failure 500 {object} domain.Response "Erro interno"
 // @Router  /users/:id/contacts [delete]
 func (cc *ContactController) Delete(c *gin.Context) {
-    userID, err := strconv.Atoi(c.Param("id"))
-    if err != nil {
-        c.JSON(http.StatusBadRequest, domain.Response{Message: "Invalid id"})
-        return
-    }
+	username := c.GetString("x-user-username") // pega o usuario que esta logado	
+
+	user, err := cc.ContactUseCase.GetUserByUsername(c, username) // pega os dados do usuario que esta logado
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
+		return
+	}
 
     var contactID struct {
         ContactID int64 `json:"id_contact" binding:"required"`
@@ -116,7 +126,7 @@ func (cc *ContactController) Delete(c *gin.Context) {
     }
 
     // verifica se o contato existe
-    cont, err := cc.ContactUseCase.GetContactById(c, int64(userID), contactID.ContactID)
+    cont, err := cc.ContactUseCase.GetContactById(c, int64(user.ID), contactID.ContactID)
     if err != nil {
         c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
         return

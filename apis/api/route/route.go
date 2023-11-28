@@ -21,7 +21,6 @@ func Setup(env *infrastructure.Env, timeout time.Duration, cache *redis.Client, 
 	NewSignupRouter(env, timeout, cache, email, db, PublicRouter)
 	NewLoginRouter(env, timeout, cache, email, db, PublicRouter)
 	NewForgotRouter(env, timeout, cache, email, db, PublicRouter)
-	NewContactRouter(env, timeout, cache, email, db, PublicRouter)
 	NewUserRouter(env, timeout, cache, email, db, PublicRouter)
 
 	ProtectRouter := engine.Group("/api/v1")
@@ -29,5 +28,6 @@ func Setup(env *infrastructure.Env, timeout time.Duration, cache *redis.Client, 
 	NewPrivateChatRouter(env, timeout, cache, email, db, ProtectRouter, PublicRouter)
 	NewCommunityChatRouter(env, timeout, cache, email, db, ProtectRouter, PublicRouter)
 	NewProfileRouter(env, timeout, cache, email, db, ProtectRouter, PublicRouter)
+	NewContactRouter(env, timeout, cache, email, db, ProtectRouter, PublicRouter)
 	//NewUserRouter(env, timeout, cache, email, db, ProtectRouter)
 }

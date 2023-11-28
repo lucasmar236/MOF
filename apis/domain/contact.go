@@ -38,6 +38,7 @@ type ContactUseCase interface {
 	Post(c context.Context, contact *Contact) error
 	GetAll(c context.Context, user string) ([]UserContacts, error)
 	GetUserById(c context.Context, user int64) (User, error)
+	GetUserByUsername(c context.Context, username string) (User, error)
 	GetContactById(c context.Context, user int64, contact int64) (Contact, error)
 	Delete(c context.Context, contact *Contact) error
 }
