@@ -1,0 +1,10 @@
+.imagem{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  & img {
+    width:30%;
+    margin:10px
+  }
+}
