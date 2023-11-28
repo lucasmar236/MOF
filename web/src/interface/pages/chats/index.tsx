@@ -1,11 +1,12 @@
 import React from "react";
+import FormListContact from "../../components/private/chats/formListContact";
 
 
 function Chats() {
     return(
-        <h1>
-            Chats
-        </h1>
+        <div>
+            <FormListContact/>
+        </div>
     )
 }
 

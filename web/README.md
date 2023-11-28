@@ -1,46 +1,61 @@
-# Getting Started with Create React App
+# 🇧🇷 Documentação sobre arquitetura/organização da web
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Esta parte do projeto consiste apenas na documentação da arquitetura/organização da aplicação na web, demonstrando como foram sepradas e montadas assim como o que cada pasta contém,os comandos para iniciar a aplicação podem ser encontrados no Readme geral da aplicação.
 
-## Available Scripts
+## :pushpin: O que é Clean Architecture
 
-In the project directory, you can run:
+Clean Architecture tenta fornecer uma metodologia a ser usada na codificação, a fim de facilitar o desenvolvimento códigos, permitir uma melhor manutenção, atualização e menos dependências.Tem o objetivo de fornecer aos desenvolvedores uma maneira de organizar o código de forma que encapsule a lógica de negócios, mas mantenha-o separado do mecanismo de entrega.
 
-### `npm start`
+## :open_file_folder: Organização a parte web
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+O projeto atualmente contém as seguintes pastas:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- [assets]();
+- [data]();
+- [domain]();
+- [interface]();
+- [router]();
+- [service]();
 
-### `npm test`
+Cada pasta possui uma responsabilidade dentro da aplicação e neste bloco irei detalhar um pouco melhor o que cada uma cóntem e quais são suas responsabilidades:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### :framed_picture: Assets
 
-### `npm run build`
+A pasta Assets tem como responsabilidade guardar arquivos responsáveis por fontes,imagens e scss(na versão atual os scss estão separados e junto com o seu componente, durante a proxima refatoração será colocado dentro do assets para assim termos uma centralização melhor).
+As pastas dentro do assets seguem o seguinte formato:
+  - `imgs`: pasta que contém todas as imagens utilizadas no software;
+  - `fonts`: pasta que contém todas as fonts utilizadas no software;
+  - `scss`: pasta que contém todos os scss utilizadas no software e possuí subpastas com o nome do componente(assets/sccs/private/createAccountSccs);
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### :books: Data
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+A pasta Data tem como responsabilidade guardar arquivos responsáveis pelos dados da aplicação e implementação das regras de négocio que foram declaras no `Domain` além de possuir uma dependência com a mesma.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### :card_index_dividers: Domain
 
-### `npm run eject`
+A pasta Domain tem como responsabilidade guardar arquivos responsáveis pelas regras de négocio da aplicação e não contém dependência com nenhuma outra camada,as pastas dentro da Domains segue o seguinte formato:
+  - `entities`: pasta que contém as entidades usadas dentro da aplicação com os seus respectivos metodos;
+  - `repositories`: pasta que contém uma coleção das regras de negócio;
+  - `usecases`: pasta que contém os casos de uso da regra de negócio;
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### :art: Interface
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+A pasta Interface tem como responsabilidade guardar arquivos responsáveis pelo visual da aplicação, as pastas dentro de Interface seguem o seguinte formato:
+  - `components`: pasta que contém todos os componentes da aplicação e possui subpastas responsáveis pela organização desses componentes:
+      - `/private`:pasta que contém os componentes que são usados uma ou duas vezes em toda a aplicação, possui subpastas com o nome do componente(interface/componentes/private/createAccount);
+      - `/shared`: pasta que contém os componentes que são usados em toda a aplicação inúmeras vezes, possui subpastas com o nome do componente(interface/componentes/shared/footer);
+  - `pages`: pasta que contém todos as páginas da aplicação e possui subpastas com o nome da tela(interface/componentes/pages/login);
+  - `utils`: pasta que contém todas as funções reutilizavéis e layouts que a aplicação possui;
+    
+#### :compass: Router
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+A pasta Router tem como responsabilidade guardar arquivos responsáveis pela navegação dentro da aplicação(suas rotas públicas e privadas)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### :hammer_and_wrench: Service
 
-## Learn More
+A pasta Service tem como responsabilidade guardar arquivos responsáveis pelos serviços consumidos dentro da aplicação (requisições HTTP, estados e ganchos),as pastas dentro de Service seguem o seguinte formato:
+  - `htpp`: pasta que contém todos os metodos para realizar a conexão com a api e pode possui subpastas caso queira separar as rotas em pastas;
+  - `redux`: pasta que contém todos os estados da aplicação e possui subpastas com o nome do componente(/service/redux/createAccount);
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+    
+# 🇺🇸 Documentation about architecture and organization from web

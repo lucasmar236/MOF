@@ -11,3 +11,8 @@ export const SendLogin = (email_User:string,password:string) =>{
     }
     dispatch(requestLogin(userLogin))
 }
+
+export const verifyInputs = (event:any) => {
+    event.preventDefault();
+    event.stopPropagation();
+}

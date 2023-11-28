@@ -31,6 +31,21 @@
       "password": "uA3E00&P",
       "lastname": "Sordi",
       "cellphone": "+55 55 9918903242"
+    },
+    {
+      "email_username": "arthurfjesus@gmail.com",
+      "password": "123456",
+      "id": 5
+    },
+    {
+      "email_username": "a@gmail.com",
+      "password": "123",
+      "id": 6
+    },
+    {
+      "email_username": "a@gm",
+      "password": "12",
+      "id": 7
     }
   ]
 }
