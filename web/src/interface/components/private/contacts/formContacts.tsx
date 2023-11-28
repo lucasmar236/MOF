@@ -78,8 +78,8 @@ function FormContacts() {
                                         <div>{contact}</div>
                                     </div>
                                     <div className={styles.iconsContainer}>
-                                        <TbMailUp size={20}/>
-                                        <IoMdClose size={20}/> 
+                                        <TbMailUp size={20}  className={styles.iconStyle}/>
+                                        <IoMdClose size={20} className={styles.iconStyle}/> 
                                     </div>
                                 </li>
                             ))}
@@ -91,7 +91,7 @@ function FormContacts() {
                                         <div>{blocked}</div>
                                     </div>
                                     <div className={styles.blockedIconContainer}>
-                                        <LiaUserSlashSolid size={20}/>
+                                        <LiaUserSlashSolid size={20} className={styles.iconStyle}/>
                                     </div>
                                 </li>
                             ))}
@@ -113,8 +113,8 @@ function FormContacts() {
                                         <div>{community}</div>
                                     </div>
                                     <div className={styles.iconsContainer}>
-                                        <TbMailUp size={20}/>
-                                        <IoMdClose size={20}/> 
+                                        <TbMailUp size={20} className={styles.iconStyle}/>
+                                        <IoMdClose size={20} className={styles.iconStyle}/> 
                                     </div>
                                 </li>
                             ))}
