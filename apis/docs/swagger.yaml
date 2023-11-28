@@ -1,0 +1,567 @@
+definitions:
+  domain.AccessChatRequest:
+    properties:
+      chat:
+        type: string
+    type: object
+  domain.CommunityChatRequest:
+    properties:
+      contacts:
+        items:
+          type: integer
+        type: array
+      name:
+        type: string
+    type: object
+  domain.CommunityChatResponse:
+    properties:
+      chat:
+        type: string
+    type: object
+  domain.CommunityChatResponseTwoPhase:
+    properties:
+      code:
+        type: string
+    type: object
+  domain.Contact:
+    properties:
+      id_contact:
+        type: integer
+    type: object
+  domain.ContactResponse:
+    properties:
+      contacts:
+        items:
+          $ref: '#/definitions/domain.UserContacts'
+        type: array
+    type: object
+  domain.ForgotRequest:
+    properties:
+      confirm_pass:
+        type: string
+      email:
+        type: string
+      new_pass:
+        type: string
+    required:
+    - confirm_pass
+    - email
+    - new_pass
+    type: object
+  domain.LoginRequest:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  domain.PrivateChatRequest:
+    properties:
+      contact:
+        type: integer
+    type: object
+  domain.PrivateChatResponse:
+    properties:
+      chat:
+        type: string
+    type: object
+  domain.PrivateChatResponseTwoPhase:
+    properties:
+      code:
+        type: string
+    type: object
+  domain.Response:
+    properties:
+      message:
+        type: string
+    type: object
+  domain.SignupRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      number_phone:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - number_phone
+    - password
+    - username
+    type: object
+  domain.TwoPhaseRequest:
+    properties:
+      code:
+        type: string
+    required:
+    - code
+    type: object
+  domain.TwoPhaseResponse:
+    properties:
+      access_token:
+        type: string
+    type: object
+  domain.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      number_phone:
+        type: string
+      password:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  domain.UserContacts:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      number_phone:
+        type: string
+      username:
+        type: string
+    type: object
+  domain.UsersReponse:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/domain.User'
+        type: array
+    type: object
+info:
+  contact: {}
+paths:
+  /community_chat:
+    post:
+      consumes:
+      - application/json
+      description: Criar um chat em comunidade
+      parameters:
+      - description: Dados da comunidade
+        in: body
+        name: Corpo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CommunityChatRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Sucesso
+          schema:
+            $ref: '#/definitions/domain.CommunityChatResponse'
+        "400":
+          description: Informações inválidas
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "500":
+          description: Erro interno
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Criar um chat em comunidade
+      tags:
+      - Chat em comunidade
+  /community_chat/access:
+    post:
+      consumes:
+      - application/json
+      description: Solicita acesso a um chat em comunidade
+      parameters:
+      - description: Dados da verificação
+        in: body
+        name: Corpo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.AccessChatRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sucesso
+          schema:
+            $ref: '#/definitions/domain.CommunityChatResponseTwoPhase'
+        "400":
+          description: Informações inválidas
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "500":
+          description: Erro interno
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Solicita acesso a um chat em comunidade
+      tags:
+      - Chat em comunidade
+  /forgot:
+    put:
+      consumes:
+      - application/json
+      description: Esqueci minha senha
+      parameters:
+      - description: Dados da comunidade
+        in: body
+        name: Corpo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ForgotRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Sucesso
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Informações inválidas
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "500":
+          description: Erro interno
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Esqueci minha senha
+      tags:
+      - Esqueci minha senha
+  /forgot/verify:
+    post:
+      consumes:
+      - application/json
+      description: Esqueci minha senha
+      parameters:
+      - description: Dados da verificação
+        in: body
+        name: Corpo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TwoPhaseRequest'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Sucesso
+          schema:
+            type: ""
+        "400":
+          description: Informações inválidas
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "500":
+          description: Erro interno
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Realiza a verificação de duplo fator do esqueci minha senha
+      tags:
+      - Esqueci minha senha
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Realiza a autenticação
+      parameters:
+      - description: Dados do login
+        in: body
+        name: Corpo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sucesso
+          schema:
+            $ref: '#/definitions/domain.TwoPhaseResponse'
+        "400":
+          description: Crendeciais inválidas
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "500":
+          description: Erro ao logar
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Realiza a autenticação do usuário
+      tags:
+      - Login
+  /login/verify:
+    post:
+      consumes:
+      - application/json
+      description: Realiza o login
+      parameters:
+      - description: Dados da verificação
+        in: body
+        name: Corpo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TwoPhaseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sucesso
+          schema:
+            $ref: '#/definitions/domain.TwoPhaseResponse'
+        "400":
+          description: Código não informado
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "404":
+          description: Usuário não encontrado
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "500":
+          description: Erro ao verificar codigo
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Realiza a autenticação dem duplo fator
+      tags:
+      - Login
+  /logout:
+    post:
+      consumes:
+      - application/json
+      description: Realiza o logout do usuário
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Sucesso
+          schema:
+            type: ""
+        "500":
+          description: Erro ao realizar logout
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Realiza o logout do usuário
+      tags:
+      - Login
+  /private_chat:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Dados da convers
+        in: body
+        name: Corpo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.PrivateChatRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Sucesso
+          schema:
+            $ref: '#/definitions/domain.PrivateChatResponse'
+        "400":
+          description: Informações inválidas
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "500":
+          description: Erro interno
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Cria um novo chat privado
+      tags:
+      - Chat Privado
+  /private_chat/access:
+    post:
+      consumes:
+      - application/json
+      description: Solicita acesso a um chat chat privado
+      parameters:
+      - description: Dados da convers
+        in: body
+        name: Corpo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.AccessChatRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Sucesso
+          schema:
+            $ref: '#/definitions/domain.PrivateChatResponseTwoPhase'
+        "400":
+          description: Informações inválidas
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "500":
+          description: Erro interno
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Solicita acesso a um chat chat privado
+      tags:
+      - Chat Privado
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: Realiza o cadastro do usuário
+      parameters:
+      - description: Dados do cadastro
+        in: body
+        name: Corpo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.SignupRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sucesso
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Informações inválidas
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "409":
+          description: Usuário já existe
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "500":
+          description: Erro ao verificar codigo
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Realiza o cadastro do usuário
+      tags:
+      - Cadastro
+  /signup/verify:
+    post:
+      consumes:
+      - application/json
+      description: Realiza o cadastro do usuário
+      parameters:
+      - description: Dados da verificação
+        in: body
+        name: Corpo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TwoPhaseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sucesso
+          schema:
+            $ref: '#/definitions/domain.TwoPhaseResponse'
+        "400":
+          description: Código não informado
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "404":
+          description: Usuário não encontrado
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "500":
+          description: Erro ao verificar codigo
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Realiza o cadastro do usuário
+      tags:
+      - Cadastro
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Solicita acesso a um chat chat privado
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Sucesso
+          schema:
+            $ref: '#/definitions/domain.UsersReponse'
+        "400":
+          description: Informações inválidas
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Solicita acesso a um chat chat privado
+      tags:
+      - Usuários
+  /users/:id/contacts:
+    get:
+      consumes:
+      - application/json
+      description: Lista todos os contatos do usuário
+      parameters:
+      - description: ID do usuário
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Sucesso
+          schema:
+            $ref: '#/definitions/domain.ContactResponse'
+        "500":
+          description: Erro interno
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Lista todos os contatos do usuário
+      tags:
+      - Contatos
+    post:
+      consumes:
+      - application/json
+      description: Adiciona contato ao usuário
+      parameters:
+      - description: ID do usuário
+        in: path
+        name: ID
+        required: true
+        type: string
+      - description: Dados do contato
+        in: body
+        name: Corpo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Contact'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Sucesso
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "400":
+          description: Informações inválidas
+          schema:
+            $ref: '#/definitions/domain.Response'
+        "500":
+          description: Erro interno
+          schema:
+            $ref: '#/definitions/domain.Response'
+      summary: Adiciona contato ao usuário
+      tags:
+      - Contatos
+swagger: "2.0"

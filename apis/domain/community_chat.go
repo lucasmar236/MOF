@@ -30,6 +30,14 @@ type CommunityChatRequest struct {
 	Contacts []uint `json:"contacts"`
 }
 
+type CommunityChatResponse struct {
+	Chat string `json:"chat"`
+}
+
+type CommunityChatResponseTwoPhase struct {
+	Code string `json:"code"`
+}
+
 type ChatCommunityRepository interface {
 	Post(c context.Context, chat CommunityChat) error
 	GetKey(c context.Context, key string, prefix string) (string, error)

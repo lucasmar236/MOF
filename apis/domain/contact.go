@@ -7,12 +7,12 @@ import (
 )
 
 type Contact struct {
-	ID        uint           `json:"id,omitempty" gorm:"primaryKey"`
-	IdUser    uint           `db:"id_user" json:"id_user"`
+	ID        uint           `json:"id,omitempty" gorm:"primaryKey" swaggerignore:"true"`
+	IdUser    uint           `db:"id_user" json:"id_user" swaggerignore:"true"`
 	IdContact uint           `db:"id_contact" json:"id_contact"`
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index"`
+	CreatedAt time.Time      `json:"created_at" swaggerignore:"true"`
+	UpdatedAt time.Time      `json:"updated_at"  swaggerignore:"true"`
+	DeletedAt gorm.DeletedAt `json:"deleted_at,omitempty" gorm:"index"  swaggerignore:"true"`
 }
 
 type UserContacts struct {
@@ -21,6 +21,10 @@ type UserContacts struct {
 	Email       string `db:"email" json:"email"`
 	Username    string `db:"username" json:"username"`
 	NumberPhone string `db:"number_phone" json:"number_phone"`
+}
+
+type ContactResponse struct {
+	Contacts []UserContacts `json:"contacts"`
 }
 
 type ContactRepository interface {

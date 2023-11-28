@@ -1,0 +1,870 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/community_chat": {
+            "post": {
+                "description": "Criar um chat em comunidade",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat em comunidade"
+                ],
+                "summary": "Criar um chat em comunidade",
+                "parameters": [
+                    {
+                        "description": "Dados da comunidade",
+                        "name": "Corpo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CommunityChatRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/domain.CommunityChatResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Informações inválidas",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/community_chat/access": {
+            "post": {
+                "description": "Solicita acesso a um chat em comunidade",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat em comunidade"
+                ],
+                "summary": "Solicita acesso a um chat em comunidade",
+                "parameters": [
+                    {
+                        "description": "Dados da verificação",
+                        "name": "Corpo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.AccessChatRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/domain.CommunityChatResponseTwoPhase"
+                        }
+                    },
+                    "400": {
+                        "description": "Informações inválidas",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/forgot": {
+            "put": {
+                "description": "Esqueci minha senha",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Esqueci minha senha"
+                ],
+                "summary": "Esqueci minha senha",
+                "parameters": [
+                    {
+                        "description": "Dados da comunidade",
+                        "name": "Corpo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.ForgotRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Informações inválidas",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/forgot/verify": {
+            "post": {
+                "description": "Esqueci minha senha",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Esqueci minha senha"
+                ],
+                "summary": "Realiza a verificação de duplo fator do esqueci minha senha",
+                "parameters": [
+                    {
+                        "description": "Dados da verificação",
+                        "name": "Corpo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.TwoPhaseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "type": ""
+                        }
+                    },
+                    "400": {
+                        "description": "Informações inválidas",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "Realiza a autenticação",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Realiza a autenticação do usuário",
+                "parameters": [
+                    {
+                        "description": "Dados do login",
+                        "name": "Corpo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TwoPhaseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Crendeciais inválidas",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro ao logar",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/login/verify": {
+            "post": {
+                "description": "Realiza o login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Realiza a autenticação dem duplo fator",
+                "parameters": [
+                    {
+                        "description": "Dados da verificação",
+                        "name": "Corpo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.TwoPhaseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TwoPhaseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Código não informado",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro ao verificar codigo",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "description": "Realiza o logout do usuário",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Realiza o logout do usuário",
+                "responses": {
+                    "204": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "type": ""
+                        }
+                    },
+                    "500": {
+                        "description": "Erro ao realizar logout",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/private_chat": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat Privado"
+                ],
+                "summary": "Cria um novo chat privado",
+                "parameters": [
+                    {
+                        "description": "Dados da convers",
+                        "name": "Corpo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.PrivateChatRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/domain.PrivateChatResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Informações inválidas",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/private_chat/access": {
+            "post": {
+                "description": "Solicita acesso a um chat chat privado",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat Privado"
+                ],
+                "summary": "Solicita acesso a um chat chat privado",
+                "parameters": [
+                    {
+                        "description": "Dados da convers",
+                        "name": "Corpo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.AccessChatRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/domain.PrivateChatResponseTwoPhase"
+                        }
+                    },
+                    "400": {
+                        "description": "Informações inválidas",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/signup": {
+            "post": {
+                "description": "Realiza o cadastro do usuário",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cadastro"
+                ],
+                "summary": "Realiza o cadastro do usuário",
+                "parameters": [
+                    {
+                        "description": "Dados do cadastro",
+                        "name": "Corpo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.SignupRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Informações inválidas",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "409": {
+                        "description": "Usuário já existe",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro ao verificar codigo",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/signup/verify": {
+            "post": {
+                "description": "Realiza o cadastro do usuário",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cadastro"
+                ],
+                "summary": "Realiza o cadastro do usuário",
+                "parameters": [
+                    {
+                        "description": "Dados da verificação",
+                        "name": "Corpo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.TwoPhaseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TwoPhaseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Código não informado",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro ao verificar codigo",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "description": "Solicita acesso a um chat chat privado",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Usuários"
+                ],
+                "summary": "Solicita acesso a um chat chat privado",
+                "responses": {
+                    "201": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/domain.UsersReponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Informações inválidas",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/:id/contacts": {
+            "get": {
+                "description": "Lista todos os contatos do usuário",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Lista todos os contatos do usuário",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do usuário",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ContactResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Adiciona contato ao usuário",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Contatos"
+                ],
+                "summary": "Adiciona contato ao usuário",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do usuário",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados do contato",
+                        "name": "Corpo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.Contact"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Informações inválidas",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "domain.AccessChatRequest": {
+            "type": "object",
+            "properties": {
+                "chat": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.CommunityChatRequest": {
+            "type": "object",
+            "properties": {
+                "contacts": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.CommunityChatResponse": {
+            "type": "object",
+            "properties": {
+                "chat": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.CommunityChatResponseTwoPhase": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Contact": {
+            "type": "object",
+            "properties": {
+                "id_contact": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.ContactResponse": {
+            "type": "object",
+            "properties": {
+                "contacts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.UserContacts"
+                    }
+                }
+            }
+        },
+        "domain.ForgotRequest": {
+            "type": "object",
+            "required": [
+                "confirm_pass",
+                "email",
+                "new_pass"
+            ],
+            "properties": {
+                "confirm_pass": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "new_pass": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.LoginRequest": {
+            "type": "object",
+            "required": [
+                "login",
+                "password"
+            ],
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.PrivateChatRequest": {
+            "type": "object",
+            "properties": {
+                "contact": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.PrivateChatResponse": {
+            "type": "object",
+            "properties": {
+                "chat": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.PrivateChatResponseTwoPhase": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Response": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.SignupRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "last_name",
+                "number_phone",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "number_phone": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.TwoPhaseRequest": {
+            "type": "object",
+            "required": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.TwoPhaseResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.User": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "number_phone": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.UserContacts": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "number_phone": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.UsersReponse": {
+            "type": "object",
+            "properties": {
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.User"
+                    }
+                }
+            }
+        }
+    }
+}
