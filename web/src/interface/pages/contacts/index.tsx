@@ -1,7 +1,7 @@
 import React from "react";
-import FormMenu from "../../components/private/profile/formMenu";
-import FormProfile from "../../components/private/profile/formProfile";
-function Profile () {
+import FormMenu from "../../components/private/contacts/formMenu";
+import FormContacts from "../../components/private/contacts/formContacts";
+function Contacts () {
 
     return(
         <>
@@ -10,11 +10,11 @@ function Profile () {
                     <FormMenu/> 
                 </div>
                 <div>
-                    <FormProfile/>
+                    <FormContacts/>
                 </div>
             </div>
         </>
     )
 }
 
-export default Profile
+export default Contacts

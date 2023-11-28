@@ -10,6 +10,7 @@ import {Navigate} from "react-router-dom";
 import TwoFactor from "../interface/pages/twoFactor";
 import Register from "../interface/pages/register";
 import Profile from "../interface/pages/profile";
+import Contacts from "../interface/pages/contacts";
 
 const authProtected = [
     {path:"/", exact:true,component: <Navigate to='/login'/>},
@@ -23,6 +24,7 @@ const publicRoutes = [
     {path:"/two-factors",component: <TwoFactor/>},
     {path: "/create-account",component: <Register/> },
     {path: "/profile",component: <Profile/> },
+    {path: "/contacts",component: <Contacts/> },
     // {path:"/chats",component: <Chats/>}
 
 ]

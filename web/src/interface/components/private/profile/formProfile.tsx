@@ -1,4 +1,4 @@
-import React, { useState, useCallback, InputHTMLAttributes } from "react";
+import React, { useState, useCallback } from "react";
 import { CardManageUser } from "../../shared/cardManageUser";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { RiLock2Line, RiPhoneLine, RiAtLine, RiMailLine, RiUserLine, RiUserAddLine } from "react-icons/ri";
@@ -46,7 +46,7 @@ function FormProfile() {
             setValidatedPassword("Password is invalid.")
         }
 
-        if (numberphone.length == 11) {
+        if (numberphone.length === 11) {
             setValidatedNumberphone("")
         } else {
             setValidatedNumberphone("Phone number is not completely filled in.")
@@ -55,19 +55,19 @@ function FormProfile() {
         if (username.length > 4) {
             setValidatedUsername("")
         } else {
-            setValidatedUsername("Must contain at least 5 characters.")
+            setValidatedUsername("Must contain least 5 characters.")
         }
 
         if (firstname.length > 2) {
             setValidatedFirstname("")
         } else {
-            setValidatedFirstname("Must contain at least 2 characters.")
+            setValidatedFirstname("Must contain least 2 characters.")
         }
 
         if (lastname.length > 2) {
             setValidatedLastname("")
         } else {
-            setValidatedLastname("Must contain at least 2 characters.")
+            setValidatedLastname("Must contain least 2 characters.")
         }
 
         // somente se nao tiver erros fazer isso \/
@@ -92,7 +92,6 @@ function FormProfile() {
     };
 
     const handleUsername = useCallback((e: any) => {
-        e.currentTarget.maxLength = 18;
         let value = e.currentTarget.value;
         value = value.replace(/[^a-zA-Z0-9\-_]/g, "");
         e.currentTarget.value = value;
@@ -101,7 +100,6 @@ function FormProfile() {
     }, []);
 
     const handleFirstname = useCallback((e: any) => {
-        e.currentTarget.maxLength = 25;
         let value = e.currentTarget.value;
         value = value.replace(/[^a-zA-Z]/g, "");
         e.currentTarget.value = value;
@@ -110,7 +108,6 @@ function FormProfile() {
     }, []);
 
     const handleLastname = useCallback((e: any) => {
-        e.currentTarget.maxLength = 25;
         let value = e.currentTarget.value;
         value = value.replace(/[^a-zA-Z]/g, "");
         e.currentTarget.value = value;
@@ -121,14 +118,14 @@ function FormProfile() {
     return (
         <>
             <CardManageUser title="Profile">
-                <Form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', margin: '25px' }} noValidate>
-                    <div style={{ marginLeft: '10px', marginRight: '10px' }}>
+                <Form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', margin: '25px', justifyContent: 'space-between' }} noValidate>
+                    <div style={{ marginLeft: '10px', marginRight: '40px' }}>
                         <Row>
                             <img style={{ width: '75%' }} alt={"Foto de perfil do Usuário"} src={userProfile} />
                         </Row>
                         <Form.Group className="mt-3" as={Col} controlId="formUsername">
                             <Form.Label><RiAtLine style={{ marginRight: "10px" }} />Username</Form.Label>
-                            <Form.Control name="username" type="text" placeholder="Username" value={username} onChange={handleUsername} isInvalid={validatedUsername !== ""}/>
+                            <Form.Control maxLength={18} name="username" type="text" placeholder="Username" value={username} onChange={handleUsername} isInvalid={validatedUsername !== ""}/>
                             <Form.Control.Feedback type="invalid">
                                 {validatedUsername}
                             </Form.Control.Feedback>
@@ -136,10 +133,10 @@ function FormProfile() {
                     </div>
 
                     <div style={{ marginTop: "10px", marginLeft: "10px", marginRight: "10px" }}>
-                        <Row className="mb-3">
+                        <Row className="mb-3" style={{ maxWidth:'28.875em'}}>
                             <Form.Group as={Col} controlId="formName">
                                 <Form.Label><RiUserLine style={{ marginRight: "10px" }} />Name</Form.Label>
-                                <Form.Control name="first_name" type="text" placeholder="Name" value={firstname} onChange={handleFirstname} isInvalid={validatedFirstname !== ""}/>
+                                <Form.Control maxLength={20} name="first_name" type="text" placeholder="Name" value={firstname} onChange={handleFirstname} isInvalid={validatedFirstname !== ""}/>
                                 <Form.Control.Feedback type="invalid">
                                     {validatedFirstname}
                                 </Form.Control.Feedback>
@@ -147,7 +144,7 @@ function FormProfile() {
 
                             <Form.Group as={Col} controlId="formLastName">
                                 <Form.Label><RiUserAddLine style={{ marginRight: "10px" }} />Lastname</Form.Label>
-                                <Form.Control name="last_name" type="text" placeholder="Lastname" value={lastname} onChange={handleLastname} isInvalid={validatedLastname !== ""}/>
+                                <Form.Control maxLength={20} name="last_name" type="text" placeholder="Lastname" value={lastname} onChange={handleLastname} isInvalid={validatedLastname !== ""}/>
                                 <Form.Control.Feedback type="invalid">
                                     {validatedLastname}
                                 </Form.Control.Feedback>
@@ -156,7 +153,7 @@ function FormProfile() {
 
                         <Form.Group className="mb-3" controlId="formEmail">
                             <Form.Label><RiMailLine style={{ marginRight: "10px" }} />Email</Form.Label>
-                            <Form.Control name="email" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} isInvalid={validatedEmail !== ""} />
+                            <Form.Control maxLength={50} name="email" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} isInvalid={validatedEmail !== ""} />
                             <Form.Control.Feedback type="invalid">
                                 {validatedEmail}
                             </Form.Control.Feedback>
@@ -164,7 +161,7 @@ function FormProfile() {
 
                         <Form.Group className="mb-3" controlId="formPassword">
                             <Form.Label><RiLock2Line style={{ marginRight: "10px" }} />Password</Form.Label>
-                            <Form.Control name="password" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} isInvalid={validatedPassword !== ""} />
+                            <Form.Control maxLength={30} name="password" type="password" placeholder="Password" value={password}  onChange={(e) => setPassword(e.target.value)} isInvalid={validatedPassword !== ""} />
                             <Form.Control.Feedback type="invalid">
                                 <label>Invalid password. Password must contain:</label>
                                 <ul>
