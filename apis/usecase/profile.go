@@ -11,6 +11,7 @@ type ProfileUseCase struct {
 	timeout time.Duration
 }
 
+
 func NewProfileUseCase(user domain.UserRepository, timeout time.Duration) domain.ProfileUseCase {
 	return &ProfileUseCase{
 		user:    user,
