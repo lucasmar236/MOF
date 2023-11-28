@@ -18,4 +18,5 @@ func NewProfileRouter(env *infrastructure.Env, timeout time.Duration, cache *red
 	pc := &controller.ProfileController{ProfileUseCase: usecase.NewProfileUseCase(ur, timeout), Env: env}
 	groupPrivate.PUT("/user", pc.UpdateUser)
 	groupPrivate.DELETE("/delete-account", pc.DeleteUser)
+	groupPrivate.GET("/user", pc.GetUser)
 }

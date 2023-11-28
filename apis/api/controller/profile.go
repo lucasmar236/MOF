@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lucasmar236/MOF/domain"
 	"github.com/lucasmar236/MOF/infrastructure"
-	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
@@ -58,22 +57,9 @@ func (pu *ProfileController) UpdateUser(c *gin.Context) {
 			return
 		}
 	}
-
-	// criptografa senha e atualiza usuario
-	encryptedPass, err := bcrypt.GenerateFromPassword(
-		[]byte(request.Password),
-		bcrypt.DefaultCost,
-	)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
-		return
-	}
-
-	request.Password = string(encryptedPass)
 	
 	user.FirstName = request.FirstName
 	user.LastName = request.LastName
-	user.Password = request.Password
 	user.Email = request.Email
 	user.Username = request.Username
 	user.NumberPhone = request.NumberPhone
@@ -109,4 +95,35 @@ func (pu *ProfileController) DeleteUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
 		return
 	}
+}
+
+
+// @Summary Busca os dados do usuário
+// @Schemes
+// @Description Busca os dados do usuário logado
+// @Tags Perfil
+// @Accept json
+// @Produce json
+// @Success 200 {object} domain.ProfileResponse "Sucesso"
+// @Failure 401 {object} domain.Response "Não autorizado"
+// @Failure 500 {object} domain.Response "Erro interno"
+// @Router /user [get]
+func (pu *ProfileController) GetUser(c *gin.Context) {
+	username := c.GetString("x-user-username") // pega o usuario que esta logado	
+
+	user, err := pu.ProfileUseCase.GetUserByUsername(c, username) // pega os dados do usuario que esta logado
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
+		return
+	}
+
+	response := domain.ProfileResponse{
+		FirstName:   user.FirstName,
+		LastName:    user.LastName,
+		Email:       user.Email,
+		Username:    user.Username,
+		NumberPhone: user.NumberPhone,
+	}
+
+	c.JSON(http.StatusOK, response)
 }
