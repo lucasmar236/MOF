@@ -1,15 +1,22 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {CardLayout} from "../../shared/cardLayout";
 import {Button, Col, Form, Modal, Row} from "react-bootstrap";
 import {RiLock2Line, RiPhoneLine, RiAtLine, RiMailLine, RiUserLine, RiCake2Line,RiUserAddLine} from "react-icons/ri";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../../../services/hooks";
-import {requestCreate} from "../../../../services/redux/createAccount/userCreateSlice";
+import {requestCreate, userCreateSlice} from "../../../../services/redux/createAccount/userCreateSlice";
+import {useSelector} from "react-redux";
 
 function FormCreateAccount (){
 
+    const {sendUserCreateSuccess,sendUserCreateError} = useSelector((state:any) => ({
+        sendUserCreateSuccess: state.userCreateSlice.sendUserCreateSuccess,
+        sendUserCreateError: state.userCreateSlice.sendUserCreateError
+    }))
+
     const dispatch = useAppDispatch()
 
+    const navigate = useNavigate()
 
     const [show, setShow] = useState(false);
     const [firstName,setFirstName] = useState("")
@@ -36,6 +43,18 @@ function FormCreateAccount (){
         }
             dispatch(requestCreate(userRegister))
     }
+
+    useEffect(() => {
+        if(sendUserCreateSuccess === "Usuário criado com sucesso!"){
+            navigate("/login")
+        }
+        if(sendUserCreateError === "Usuário ja existe!"){
+            console.log("OPA")
+        }
+
+    }, [sendUserCreateSuccess,sendUserCreateError]);
+
+    console.log(sendUserCreateSuccess)
 
     return(
         <>

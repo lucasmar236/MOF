@@ -48,13 +48,13 @@ export const userCreateSlice = createSlice({
         builder.addCase(requestCreate.fulfilled,(state,action)=>({
             ...state,
             sendUserCreate:action.payload,
-            sendUserCreateSuccess:"",
+            sendUserCreateSuccess:"Usuário criado com sucesso!",
             sendUserCreateLoading:false
         }))
         builder.addCase(requestCreate.rejected,(state,action)=>({
             ...state,
             sendUserCreateLoading:false,
-            sendUserCreateError:"",
+            sendUserCreateError:"Usuário ja existe!",
         }))
         builder.addCase(requestCreate.pending,(state,action)=>({
             ...state,

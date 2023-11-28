@@ -22,7 +22,8 @@ const publicRoutes = [
     {path:"/change-password",component: <ChangePassword/>},
     {path:"/two-factors",component: <TwoFactor/>},
     {path: "/create-account",component: <Register/> },
-    {path: "/profile",component: <Profile/> }
+    {path: "/profile",component: <Profile/> },
+    // {path:"/chats",component: <Chats/>}
 
 ]
 

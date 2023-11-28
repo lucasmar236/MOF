@@ -1,17 +1,17 @@
 import {Navigate} from "react-router-dom";
-import PublicLayout from "../interface/utils/layouts/publicLayout";
+import PrivateLayout from "../interface/utils/layouts/privateLayout";
 
 const VerifyAuth = (props: { location: string; children: object; }) => {
-    if(!localStorage.getItem("authUser")){
+    if(!localStorage.getItem("auth")){
         return(
             <Navigate to="/login" state ={{from : props.location }}/>
         )
     }
     return (
         <>
-            <PublicLayout>
+            <PrivateLayout data={{username:localStorage.getItem("userName")}}>
                 {props.children}
-            </PublicLayout>
+            </PrivateLayout>
         </>
     )
 }

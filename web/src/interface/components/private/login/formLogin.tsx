@@ -12,7 +12,7 @@ function FormLogin(){
     const {userSuccess,userLoading,userError} = useSelector((state:any)  =>({
         userSuccess: state.userSlice.userSuccess,
         userLoading: state.userSlice.userLoading,
-        userError : state.userSlice.userError
+        userError : state.userSlice.userError,
     }))
 
     const[email_User,setEmail_User] = useState("")
@@ -41,6 +41,7 @@ function FormLogin(){
     useEffect(() => {
         if(userSuccess === "Usuário Logado com sucesso!"){
             setRequestInvalid(false)
+            localStorage.setItem("userName",email_User)
             navigate("/two-factors", {state:"login"})
         }
         if(userError === "Erro ao logar, verifique suas informações!") {

@@ -12,6 +12,7 @@ interface data {
     userSuccess: string
     userError: string
     userLoading: boolean
+    user: Object
 }
 
 const initialState: data = {
@@ -23,7 +24,8 @@ const initialState: data = {
     },
     userSuccess: "",
     userError: "",
-    userLoading:false
+    userLoading:false,
+    user:{}
 }
 
 // export const requests = createAsyncThunk("userSlice/request", async ()=>{

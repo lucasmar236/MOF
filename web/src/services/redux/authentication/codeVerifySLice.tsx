@@ -32,18 +32,18 @@ export const codeVerifySlice = createSlice({
     initialState,
     reducers:{},
     extraReducers:(builder) => {
-        builder.addCase(requestCreate.fulfilled,(state, action) =>({
+        builder.addCase(requestCodeVerify.fulfilled,(state, action) =>({
             ...state,
             codeVerify:action.payload,
             loadingCode:false,
-            succesCode: "Usuário logado com sucesso!"
+            successCode: "Usuário logado com sucesso!",
         }))
-        builder.addCase(requestCreate.rejected,(state, action) =>({
+        builder.addCase(requestCodeVerify.rejected,(state, action) =>({
             ...state,
             errorCode:"Erro ao verificar codigo!",
             loadingCode:false,
         }))
-        builder.addCase(requestCreate.pending,(state,action) => ({
+        builder.addCase(requestCodeVerify.pending,(state,action) => ({
             ...state,
             loadingCode:true
         }))
