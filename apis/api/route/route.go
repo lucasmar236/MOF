@@ -28,5 +28,6 @@ func Setup(env *infrastructure.Env, timeout time.Duration, cache *redis.Client, 
 	ProtectRouter.Use(NewAuthMiddleware(timeout, cache, email, db).Auth(env.SecretKey))
 	NewPrivateChatRouter(env, timeout, cache, email, db, ProtectRouter, PublicRouter)
 	NewCommunityChatRouter(env, timeout, cache, email, db, ProtectRouter, PublicRouter)
+	NewProfileRouter(env, timeout, cache, email, db, ProtectRouter, PublicRouter)
 	//NewUserRouter(env, timeout, cache, email, db, ProtectRouter)
 }

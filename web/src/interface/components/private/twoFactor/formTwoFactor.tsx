@@ -2,13 +2,31 @@ import React, {useState} from "react";
 import {CardLayout} from "../../shared/cardLayout";
 import lock from "../../../../assets/imgs/lock.png"
 import {Button, Col, Form, Row} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import InputFactors from "./inputFactors";
+import {useAppDispatch} from "../../../../services/hooks";
+import {requestCodeVerify} from "../../../../services/redux/authentication/codeVerifySLice";
 function FormTwoFactor(){
+
+    const dispatch = useAppDispatch()
+
+
+    const location = useLocation()
 
     const [code,setCode] = useState("")
 
     const sendCode = () =>{
+        if(location.state === "forgotPassword"){
+            console.log("forgotPassword")
+        }else if(location.state === "create-account"){
+            console.log("create-account")
+        }else{
+            console.log("Login")
+        }
+        let codeVerify = {
+            code: code
+        }
+        dispatch(requestCodeVerify(codeVerify))
         console.log(code)
     }
 
