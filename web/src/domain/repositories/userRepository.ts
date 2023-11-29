@@ -3,11 +3,14 @@ import UserLogin from "../entities/userLogin";
 import TwoFactors from "../entities/twoFactors";
 import ChangePassword from "../entities/changePassword";
 import Usercontacts from "../entities/usercontacts";
+import UserChats from "../entities/userChats";
 
 export default interface UserRepository {
   // GetUser(): Promise<UserClass[]>
 
-  GetContacts(token:any):Promise<Usercontacts[]>
+  GetChats(): Promise<UserChats[]>;
+
+  GetContacts(): Promise<Usercontacts[]>;
 
   PostUserLogin(user: Object): Promise<UserLogin>;
 

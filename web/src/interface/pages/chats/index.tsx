@@ -1,32 +1,24 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import FormListContact from "../../components/private/chats/formListContact";
-import {Alert, Col, Row} from "react-bootstrap";
+import { Alert, Col, Row } from "react-bootstrap";
 import FormChat from "../../components/private/chats/formChat";
-import {useAppDispatch} from "../../../services/hooks";
-import {listContactsSlice, requestListContacts} from "../../../services/redux/contacts/getContactsSlice";
-import {useSelector} from "react-redux";
+import { useAppDispatch } from "../../../services/hooks";
+import {
+  listContactsSlice,
+  requestListContacts,
+} from "../../../services/redux/contacts/listContactsSlice";
+import { useSelector } from "react-redux";
+import { requestListChats } from "../../../services/redux/chats/listchatsSlice";
 
 function Chats() {
-
-  const {contacts,contactsSuccess,contactsError,contactsLoading} =
-      useSelector((state: any) => ({
-        contacts: state.listContactsSlice.contacts,
-        contactsSuccess: state.listContactsSlice.contactsSuccess,
-        contactsError: state.listContactsSlice.contactsError,
-        contactsLoading: state.listContactsSlice.contactsLoading
-
-      }));
-
   const [userSelect, setUserSelect] = useState("");
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    let token = `Bearer ${localStorage.getItem("auth")}`
-    dispatch(requestListContacts(token))
+    dispatch(requestListChats());
+    dispatch(requestListContacts());
   }, []);
-
-  console.log(contacts,contactsSuccess,contactsError,contactsLoading)
 
   return (
     <div>
@@ -35,9 +27,11 @@ function Chats() {
           <FormListContact user={userSelect} userState={setUserSelect} />
         </Col>
         <Col xs={8}>
-          {userSelect === "" || undefined ? <Alert variant="secondary">Selecione uma conversa</Alert>:
-          <FormChat data={userSelect} />
-          }
+          {userSelect === "" || undefined ? (
+            <Alert variant="secondary">Selecione uma conversa</Alert>
+          ) : (
+            <FormChat data={userSelect} />
+          )}
         </Col>
       </Row>
     </div>

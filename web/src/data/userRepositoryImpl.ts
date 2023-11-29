@@ -6,20 +6,28 @@ import {
   CHANGEPASSWORDCODEVERIFY,
   CODEVERIFY,
   CREATEUSER,
-  CREATEUSERCODEVERIFY, LISTCONTACTS,
+  CREATEUSERCODEVERIFY,
+  LISTCHATS,
+  LISTCONTACTS,
   LOGINUSER,
 } from "../services/htpp/routesHtpp/contacts/userContacts";
 import UserLogin from "../domain/entities/userLogin";
 import TwoFactors from "../domain/entities/twoFactors";
 import ChangePassword from "../domain/entities/changePassword";
 import Usercontacts from "../domain/entities/usercontacts";
+import UserChats from "../domain/entities/userChats";
 
 export default class UserRepositoryImpl implements UserRepository {
-
-  async GetContacts(token:any): Promise<Usercontacts[]>{
-    const resp = await Htpp.get<Usercontacts[]>(LISTCONTACTS,token)
-    return resp.data
+  async GetContacts(): Promise<Usercontacts[]> {
+    const resp = await Htpp.get<Usercontacts[]>(LISTCONTACTS);
+    return resp.data;
   }
+
+  async GetChats(): Promise<UserChats[]> {
+    const resp = await Htpp.get<UserChats[]>(LISTCHATS);
+    return resp.data;
+  }
+
   // async GetUser(): Promise<UserClass[]> {
   //     const resp = await Htpp.get<UserClass[]>(USERSLIST)
   //     return resp.data

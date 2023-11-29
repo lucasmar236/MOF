@@ -17,13 +17,12 @@ function FormContacts() {
     const getContacts = { // substituir isso pela request que busca os contatos
         friends: ["João", "Mariana Gonçalves de Freitas da Silva", "Julio", "Julia", "Juliano", "Juliana", "Francisco", "Larissa"],
         blockeds: ["Luana", "Manuel"],
-        communitys: []
+        communitys: ["JOBS", "Grupo 2"]
     };
 
     // filtros
     const [showModalContacts, setShowModalContacts] = useState(false);
     const [showModalCommunitys, setShowModalCommunitys] = useState(false);
-    const [showBlockedUsers, setShowBlockedUsers] = useState(false);
 
     const handleFilterClickContacts = () => {
         setShowModalContacts(true);
@@ -39,10 +38,6 @@ function FormContacts() {
 
     const handleCloseModalCommunitys = () => {
         setShowModalCommunitys(false);
-    };
-
-    const handleShowBlockedUsersToggle = (showBlocked: boolean) => {
-        setShowBlockedUsers(showBlocked);
     };
 
     // add contacts e create community
@@ -83,12 +78,12 @@ function FormContacts() {
                                         <div>{contact}</div>
                                     </div>
                                     <div className={styles.iconsContainer}>
-                                        <TbMailUp size={20}  className={styles.iconStyle}/>
-                                        <IoMdClose size={20} className={styles.iconStyle}/> 
+                                        <TbMailUp size={20}/>
+                                        <IoMdClose size={20}/> 
                                     </div>
                                 </li>
                             ))}
-                            {showBlockedUsers && getContacts.blockeds.map((blocked, index) => (
+                            {getContacts.blockeds.map((blocked, index) => (
                                 <li key={index} className={styles.contactItem}>
                                     <div className={styles.blockedContainer}>
                                         <img alt="Foto do contato bloqueado" src={contactDefaultPhoto} />
@@ -96,7 +91,7 @@ function FormContacts() {
                                         <div>{blocked}</div>
                                     </div>
                                     <div className={styles.blockedIconContainer}>
-                                        <LiaUserSlashSolid size={20} className={styles.iconStyle}/>
+                                        <LiaUserSlashSolid size={20}/>
                                     </div>
                                 </li>
                             ))}
@@ -118,20 +113,20 @@ function FormContacts() {
                                         <div>{community}</div>
                                     </div>
                                     <div className={styles.iconsContainer}>
-                                        <TbMailUp size={20} className={styles.iconStyle}/>
-                                        <IoMdClose size={20} className={styles.iconStyle}/> 
+                                        <TbMailUp size={20}/>
+                                        <IoMdClose size={20}/> 
                                     </div>
                                 </li>
                             ))}
                         </ul>
-{/*                         <div className={styles.addContactCommunityButton}>
+                        <div className={styles.addContactCommunityButton}>
                             <span onClick={handleCreateCommunity}>Create community</span>
-                        </div> */}
+                        </div>
                     </Col>
                 </Row>
             </CardManageUser>
-            <FilterModal show={showModalContacts} onHide={handleCloseModalContacts} placeholder="Search Contact" showBlockedUsersButton={true} onShowBlockedUsersToggle={handleShowBlockedUsersToggle}/>
-            <FilterModal show={showModalCommunitys} onHide={handleCloseModalCommunitys} placeholder="Search Community" showBlockedUsersButton={false} onShowBlockedUsersToggle={handleShowBlockedUsersToggle}/>
+            <FilterModal show={showModalContacts} onHide={handleCloseModalContacts} placeholder="Search Contact" showBlockedUsersButton={true} />
+            <FilterModal show={showModalCommunitys} onHide={handleCloseModalCommunitys} placeholder="Search Community" showBlockedUsersButton={false} />
             <AddContactModal show={showModalAddContact} onHide={handleCloseModalAddContact} />
             <CreateCommunityModal show={showModalCreateCommunity} onHide={handleCloseModalCreateCommunity} />
         </>

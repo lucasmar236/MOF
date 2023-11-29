@@ -1,5 +1,6 @@
 import UserRepository from "../repositories/userRepository";
 import Usercontacts from "../entities/usercontacts";
+import UserChats from "../entities/userChats";
 
 export default class UsersServiceImpl {
   userRepo: UserRepository;
@@ -8,8 +9,12 @@ export default class UsersServiceImpl {
     this.userRepo = ir;
   }
 
-  async GetContacts(token:any) : Promise<Usercontacts[]>{
-    return this.userRepo.GetContacts(token)
+  async GetContacts(): Promise<Usercontacts[]> {
+    return this.userRepo.GetContacts();
+  }
+
+  async GetChats(): Promise<UserChats[]> {
+    return this.userRepo.GetChats();
   }
   // async GetUser(): Promise<UserClass[]>{
   //     return this.userRepo.GetUser()

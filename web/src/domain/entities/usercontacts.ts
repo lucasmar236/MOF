@@ -1,15 +1,21 @@
 export default class Usercontacts {
-    FirstName: string
-    LastName :string
-    Email  :string
-    Username : string
-    NumberPhone :string
+  firts_name: string;
+  last_name: string;
+  email: string;
+  username: string;
+  Nnmber_phone: string;
 
-    constructor(FirstName:string,LastName:string,Email:string,Username:string,NumberPhone:string){
-        this.FirstName = FirstName
-        this.Email = Email
-        this.LastName = LastName
-        this.Username = Username
-        this.NumberPhone = NumberPhone
-    }
+  constructor(
+    firts_name: string,
+    last_name: string,
+    email: string,
+    username: string,
+    Nnmber_phone: string
+  ) {
+    this.firts_name = firts_name;
+    this.email = email;
+    this.last_name = last_name;
+    this.username = username;
+    this.Nnmber_phone = Nnmber_phone;
+  }
 }

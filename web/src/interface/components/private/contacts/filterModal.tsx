@@ -6,10 +6,9 @@ interface FilterModalProps {
     onHide: () => void;
     placeholder: string;
     showBlockedUsersButton: boolean;
-    onShowBlockedUsersToggle: (showBlocked: boolean) => void;
 }
 
-const FilterModal: React.FC<FilterModalProps> = ({ show, onHide, placeholder, showBlockedUsersButton, onShowBlockedUsersToggle }) => {
+const FilterModal: React.FC<FilterModalProps> = ({ show, onHide, placeholder, showBlockedUsersButton }) => {
     const [searchText, setSearchText] = useState("");
     const [blockedUsers, setBlockedUsers] = useState(false);
 
@@ -19,7 +18,6 @@ const FilterModal: React.FC<FilterModalProps> = ({ show, onHide, placeholder, sh
 
     const handleBlockedUsersToggle = () => {
         setBlockedUsers(!blockedUsers);
-        onShowBlockedUsersToggle(!blockedUsers);
     };
 
     return (
