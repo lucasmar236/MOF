@@ -1,6 +1,7 @@
 package infrastructure
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -10,8 +11,7 @@ import (
 )
 
 const (
-	socketBufferSize  = 1024
-	messageBufferSize = 256
+	socketBufferSize = 1024
 )
 
 var upgrader = websocket.Upgrader{
@@ -20,9 +20,15 @@ var upgrader = websocket.Upgrader{
 }
 
 type Client struct {
+	id      string
 	socket  *websocket.Conn
-	receive chan []byte
+	receive chan Message
 	room    *Room
+}
+
+type Message struct {
+	ID  string `json:"ID"`
+	Msg []byte `json:"msg"`
 }
 
 func (c *Client) read() {
@@ -32,14 +38,22 @@ func (c *Client) read() {
 		if err != nil {
 			return
 		}
-		c.room.forward <- msg
+		msgClient := Message{ID: c.id, Msg: msg}
+		if err != nil {
+			return
+		}
+		c.room.forward <- msgClient
 	}
 }
 
 func (c *Client) write() {
 	defer c.socket.Close()
 	for msg := range c.receive {
-		err := c.socket.WriteMessage(websocket.TextMessage, msg)
+		msgClient, err := json.Marshal(msg)
+		if err != nil {
+			return
+		}
+		err = c.socket.WriteMessage(websocket.TextMessage, msgClient)
 		if err != nil {
 			return
 		}
@@ -51,7 +65,7 @@ type Room struct {
 	clients            map[*Client]bool
 	join               chan *Client
 	leave              chan *Client
-	forward            chan []byte
+	forward            chan Message
 	PrivateChatUsaCase domain.ChatPrivateUseCase
 }
 
@@ -61,7 +75,7 @@ func NewRoom(chat string) *Room {
 		clients: make(map[*Client]bool),
 		join:    make(chan *Client),
 		leave:   make(chan *Client),
-		forward: make(chan []byte),
+		forward: make(chan Message),
 	}
 }
 
@@ -75,16 +89,17 @@ func (r *Room) Run() {
 			close(client.receive)
 		case msg := <-r.forward:
 			for client := range r.clients {
-				client.receive <- msg
+				if client.id != msg.ID {
+					client.receive <- msg
+				}
 			}
 		}
 	}
 }
-
 func (r *Room) ServeHttp(cache *redis.Client) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Query("access_token")
-		_, err := cache.Get(c, fmt.Sprint("Room", ":", token)).Result()
+		user, err := cache.Get(c, fmt.Sprint("Room", ":", token)).Result()
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 			return
@@ -99,8 +114,9 @@ func (r *Room) ServeHttp(cache *redis.Client) gin.HandlerFunc {
 		}
 
 		client := &Client{
+			id:      user,
 			socket:  socket,
-			receive: make(chan []byte),
+			receive: make(chan Message),
 			room:    r,
 		}
 		r.join <- client

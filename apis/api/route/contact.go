@@ -13,11 +13,11 @@ import (
 )
 
 func NewContactRouter(env *infrastructure.Env, timeout time.Duration,
-	cache *redis.Client, email *gomail.Dialer, db *gorm.DB, groupPrivate *gin.RouterGroup, groupPublic *gin.RouterGroup) {
+	cache *redis.Client, email *gomail.Dialer, db *gorm.DB, groupPrivate *gin.RouterGroup) {
 	cr := repository.NewContactRepository(db)
 	ur := repository.NewUserRepository(db, cache, email)
 	fc := &controller.ContactController{ContactUseCase: usecase.NewContactUseCase(cr, ur, timeout), Env: env}
-	groupPrivate.GET("/user/contacts", fc.GetAll)
-	groupPrivate.POST("/user/contacts", fc.Post)
-	groupPrivate.DELETE("/user/delete-contact", fc.Delete)
+	groupPrivate.GET("/contacts", fc.GetAll)
+	groupPrivate.POST("/contacts", fc.Post)
+	groupPrivate.DELETE("/contacts", fc.Delete)
 }

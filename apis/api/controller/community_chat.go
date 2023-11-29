@@ -70,7 +70,6 @@ func (pu *CommunityChatController) Post(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, domain.CommunityChatResponse{Chat: code})
-	return
 }
 
 // @Summary Solicita acesso a um chat em comunidade

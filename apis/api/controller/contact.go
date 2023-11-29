@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/lucasmar236/MOF/domain"
 	"github.com/lucasmar236/MOF/infrastructure"
@@ -21,9 +22,9 @@ type ContactController struct {
 // @Produce json
 // @Success	201	{object} domain.ContactResponse "Sucesso"
 // @Failure 500 {object} domain.Response "Erro interno"
-// @Router /users/:id/contacts [get]
+// @Router /contacts [get]
 func (cc *ContactController) GetAll(c *gin.Context) {
-	username := c.GetString("x-user-username") // pega o usuario que esta logado	
+	username := c.GetString("x-user-username") // pega o usuario que esta logado
 
 	user, err := cc.ContactUseCase.GetUserByUsername(c, username) // pega os dados do usuario que esta logado
 	if err != nil {
@@ -49,9 +50,9 @@ func (cc *ContactController) GetAll(c *gin.Context) {
 // @Success	201	{object} domain.Response "Sucesso"
 // @Failure 400 {object} domain.Response "Informações inválidas"
 // @Failure 500 {object} domain.Response "Erro interno"
-// @Router  /users/:id/contacts [post]
+// @Router  /contacts [post]
 func (cc *ContactController) Post(c *gin.Context) {
-	username := c.GetString("x-user-username") // pega o usuario que esta logado	
+	username := c.GetString("x-user-username") // pega o usuario que esta logado
 
 	user, err := cc.ContactUseCase.GetUserByUsername(c, username) // pega os dados do usuario que esta logado
 	if err != nil {
@@ -86,6 +87,7 @@ func (cc *ContactController) Post(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
 		return
 	}
+	fmt.Println(contact.ID)
 
 	err = cc.ContactUseCase.Post(c, &contact)
 	if err != nil {
@@ -107,9 +109,9 @@ func (cc *ContactController) Post(c *gin.Context) {
 // @Failure 400 {object} domain.Response "Informações inválidas"
 // @Failure 404 {object} domain.Response "Contato não encontrado"
 // @Failure 500 {object} domain.Response "Erro interno"
-// @Router  /users/:id/contacts [delete]
+// @Router  /contacts [delete]
 func (cc *ContactController) Delete(c *gin.Context) {
-	username := c.GetString("x-user-username") // pega o usuario que esta logado	
+	username := c.GetString("x-user-username") // pega o usuario que esta logado
 
 	user, err := cc.ContactUseCase.GetUserByUsername(c, username) // pega os dados do usuario que esta logado
 	if err != nil {
@@ -117,31 +119,31 @@ func (cc *ContactController) Delete(c *gin.Context) {
 		return
 	}
 
-    var contactID struct {
-        ContactID int64 `json:"id_contact" binding:"required"`
-    }
-    if err := c.ShouldBindJSON(&contactID); err != nil {
-        c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
-        return
-    }
+	var contactID struct {
+		ContactID int64 `json:"id_contact" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&contactID); err != nil {
+		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
+		return
+	}
 
-    // verifica se o contato existe
-    cont, err := cc.ContactUseCase.GetContactById(c, int64(user.ID), contactID.ContactID)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
-        return
-    }
+	// verifica se o contato existe
+	cont, err := cc.ContactUseCase.GetContactById(c, int64(user.ID), contactID.ContactID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
+		return
+	}
 
-    if cont.IdContact == 0 {
-        c.JSON(http.StatusBadRequest, domain.Response{Message: "Contact not found"})
-        return
-    }
+	if cont.IdContact == 0 {
+		c.JSON(http.StatusBadRequest, domain.Response{Message: "Contact not found"})
+		return
+	}
 
-    // exclui o contato
-    if err := cc.ContactUseCase.Delete(c, &cont); err != nil {
-        c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
-        return
-    }
+	// exclui o contato
+	if err := cc.ContactUseCase.Delete(c, &cont); err != nil {
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
+		return
+	}
 
-    c.JSON(http.StatusNoContent, nil)
+	c.JSON(http.StatusNoContent, nil)
 }
