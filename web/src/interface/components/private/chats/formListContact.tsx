@@ -1,50 +1,79 @@
-import React from "react"
-import {ListGroup, Tab, Row, Col, Image} from "react-bootstrap";
+import React from "react";
+import { Form, ListGroup, Tab, Row, Col, Image } from "react-bootstrap";
 import FormChat from "./formChat";
+import contactDefaultPhoto from "../../../../assets/imgs/contactDefaultPhoto.png";
 
+const FormListContact = (props: { user: any; userState: any }) => {
 
-function FormListContact () {
-
-    return(
-        <>
-                <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
-                    <Row>
-                        <Col sm={4}>
-                            <ListGroup>
-                                <ListGroup.Item action href="#link1">
-                                    <Row>
-                                        <Col>
-                                            <Image src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg" roundedCircle style={{width:"70%"}}/>
-                                        </Col>
-                                        <Col style={{margin:"10px"}}>
-                                            <Row><p>UserName 1</p></Row>
-                                            <Row>Last msg</Row>
-                                        </Col>
-                                    </Row>
-                                </ListGroup.Item>
-                                <ListGroup.Item action href="#link2">
-                                    <Row>
-                                    <Col>
-                                        <Image src="https://media.istockphoto.com/id/886636648/photo/young-man-is-taking-pictures-with-an-old-camera.jpg?s=612x612&w=0&k=20&c=xhNzBup3llLNBJjj4wU6kO8gmK8xiXIbxKX6cpveUhI=" roundedCircle style={{width:"70%"}}/>
-                                    </Col>
-                                        <Col style={{margin:"10px"}}>
-                                            <Row><p>UserName 2</p></Row>
-                                            <Row>Last msg</Row>
-                                        </Col>
-                                    </Row>
-                                </ListGroup.Item>
-                            </ListGroup>
-                        </Col>
-                        <Col sm={8}>
-                            <Tab.Content>
-                                <Tab.Pane eventKey="#link1"><FormChat data={"userName1"}/></Tab.Pane>
-                                <Tab.Pane eventKey="#link2"><FormChat data={"userName2"}/></Tab.Pane>
-                            </Tab.Content>
-                        </Col>
+  const userNames = [
+      {
+        id:"1",
+        username:"Talyah",
+      },
+    {
+      id:"2",
+      username:"Zoe"
+    }
+  ]
+  const handleSelect = (e: any) => {
+    props.userState(e.target.id);
+  };
+  return (
+    <>
+      <div className="border">
+        <ListGroup onClick={(e) => handleSelect(e)}>
+          <ListGroup.Item action>
+            <Form>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Control type="search" placeholder="pesquisar contato" />
+              </Form.Group>
+            </Form>
+          </ListGroup.Item>
+          {userNames.map((item,index)=> {
+            return (
+                <ListGroup.Item
+                    key={index}
+                    action
+                    href={"#link"+item.id}
+                    id={item.username}
+                >
+                  <div id={item.username}>
+                    <Row id={item.username}>
+                      <Col>
+                        <img
+                            alt="Foto do contato"
+                            id={item.username}
+                            src={contactDefaultPhoto}
+                            style={{
+                              marginTop: "12px",
+                              width: "50px",
+                              height: "50px",
+                              marginLeft: "12px",
+                              borderRadius: "50%",
+                            }}
+                        />
+                      </Col>
+                      <Col sm={8}>
+                        <Row>
+                          <p id={item.username}>{item.username}</p>
+                          <p id={item.username} style={{fontStyle: "italic" }}>Acessar o chat</p>
+                        </Row>
+                      </Col>
+                      {/*<Col>*/}
+                      {/*  <p>12:09</p>*/}
+                      {/*</Col>*/}
                     </Row>
-                </Tab.Container>
-        </>
-    )
-}
+                  </div>
+                </ListGroup.Item>
+            )
+          })}
+        </ListGroup>
+      </div>
+    </>
+  );
+};
 
-export default FormListContact
+export default FormListContact;

@@ -1,18 +1,17 @@
-import {useAppDispatch} from "../../../services/hooks";
-import {requestLogin} from "../../../services/redux/authentication/userSlice";
+import { useAppDispatch } from "../../../services/hooks";
+import { requestLogin } from "../../../services/redux/authentication/userLoginSlice";
 
-export const SendLogin = (email_User:string,password:string) =>{
+export const SendLogin = (email_User: string, password: string) => {
+  const dispatch = useAppDispatch();
 
-    const dispatch = useAppDispatch()
+  let userLogin = {
+    email_username: email_User,
+    password: password,
+  };
+  dispatch(requestLogin(userLogin));
+};
 
-    let userLogin = {
-        email_username: email_User,
-        password:password
-    }
-    dispatch(requestLogin(userLogin))
-}
-
-export const verifyInputs = (event:any) => {
-    event.preventDefault();
-    event.stopPropagation();
-}
+export const verifyInputs = (event: any) => {
+  event.preventDefault();
+  event.stopPropagation();
+};
