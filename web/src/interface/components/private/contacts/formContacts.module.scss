@@ -86,15 +86,14 @@
     }
 }
 
-.blockedShield {
-    display: flex;
-    position: absolute;
-    margin-left: 12px;
-    align-items: center;
-}
 .blockedIconContainer {
     display: flex;
     margin-right: 70px;
+}
+
+.iconStyle:hover{
+    transform: scale(1.2);
+    cursor: pointer;
 }
 
 .addContactCommunityButton {

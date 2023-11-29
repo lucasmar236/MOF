@@ -13,10 +13,9 @@ import (
 )
 
 func NewChatsRouter(env *infrastructure.Env, timeout time.Duration, cache *redis.Client, email *gomail.Dialer, db *gorm.DB, group *gin.RouterGroup) {
-	cr := repository.NewChatsRepository(db)
 	ctr := repository.NewContactRepository(db)
 	ur := repository.NewUserRepository(db, cache, email)
-	cc := &controller.ChatsController{ChatsUseCase: usecase.NewChatUseCase(cr),
+	cc := &controller.ChatsController{
 		ContactUseCase: usecase.NewContactUseCase(ctr, ur, timeout),
 		Env:            env}
 	group.GET("/chats", cc.GetAll)
