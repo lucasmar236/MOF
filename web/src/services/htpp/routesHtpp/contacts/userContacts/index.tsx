@@ -9,3 +9,5 @@ export const CODEVERIFY = "/login/verify";
 export const CHANGEPASSWORD = "/forgot";
 
 export const CHANGEPASSWORDCODEVERIFY = "/forgot/verify";
+
+export const LISTCONTACTS = "/contacts"

@@ -2,9 +2,12 @@ import UserClass from "../entities/userRegister";
 import UserLogin from "../entities/userLogin";
 import TwoFactors from "../entities/twoFactors";
 import ChangePassword from "../entities/changePassword";
+import Usercontacts from "../entities/usercontacts";
 
 export default interface UserRepository {
   // GetUser(): Promise<UserClass[]>
+
+  GetContacts(token:any):Promise<Usercontacts[]>
 
   PostUserLogin(user: Object): Promise<UserLogin>;
 

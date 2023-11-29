@@ -5,7 +5,7 @@ import userCreateSlice from "./redux/createAccount/userCreateSlice";
 import infosChangePassSlice from "./redux/changePassword/changePassSlice";
 import codeVerifyChangePassSlice from "./redux/authentication/codeVerifyChangePassSLice";
 import CreateUsercodeVerifySlice from "./redux/authentication/CreateUserCodeVerifySLice";
-
+import listContactsSlice from "./redux/contacts/getContactsSlice"
 export const store = configureStore({
   reducer: {
     userSlice,
@@ -14,6 +14,7 @@ export const store = configureStore({
     infosChangePassSlice,
     codeVerifyChangePassSlice,
     CreateUsercodeVerifySlice,
+    listContactsSlice
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

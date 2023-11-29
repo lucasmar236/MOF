@@ -1,4 +1,5 @@
 import UserRepository from "../repositories/userRepository";
+import Usercontacts from "../entities/usercontacts";
 
 export default class UsersServiceImpl {
   userRepo: UserRepository;
@@ -7,6 +8,9 @@ export default class UsersServiceImpl {
     this.userRepo = ir;
   }
 
+  async GetContacts(token:any) : Promise<Usercontacts[]>{
+    return this.userRepo.GetContacts(token)
+  }
   // async GetUser(): Promise<UserClass[]>{
   //     return this.userRepo.GetUser()
   // }
