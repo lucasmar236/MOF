@@ -3,7 +3,7 @@ import { CardManageUser } from "../../shared/cardManageUser";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { RiLock2Line, RiPhoneLine, RiAtLine, RiMailLine, RiUserLine, RiUserAddLine } from "react-icons/ri";
 import userProfile from "../../../../assets/imgs/userProfile.png"
-import {checkEmail} from "../../../utils/functions/checkSharedFieldsFunctions";
+import {checkEmail, checkPassword} from "../../../utils/functions/checkSharedFieldsFunctions";
 import InputMask from 'react-input-mask';
 
 function FormProfile() {
@@ -11,6 +11,7 @@ function FormProfile() {
         first_name: "Jose",
         last_name: "Joseval",
         email: "jose@gmail.com.br",
+        password: "Asd123456",
         number_phone: "54999889888",
         username: "josejoseval34"
     };
@@ -18,12 +19,14 @@ function FormProfile() {
     const [firstname, setFirstname] = useState(getUserInfo.first_name);
     const [lastname, setLastname] = useState(getUserInfo.last_name);
     const [email, setEmail] = useState(getUserInfo.email);
+    const [password, setPassword] = useState(getUserInfo.password);
     const [numberphone, setNumberphone] = useState(getUserInfo.number_phone);
     const [username, setUsername] = useState(getUserInfo.username);
     
     const [validatedFirstname, setValidatedFirstname] = useState("")
     const [validatedLastname, setValidatedLastname] = useState("")
     const [validatedEmail, setValidatedEmail] = useState("")
+    const [validatedPassword, setValidatedPassword] = useState("")
     const [validatedNumberphone, setValidatedNumberphone] = useState("")
     const [validatedUsername, setValidatedUsername] = useState("")
 
@@ -36,6 +39,12 @@ function FormProfile() {
         } else {
             setValidatedEmail("Email is invalid.")
         };
+
+        if (checkPassword(password)) {
+            setValidatedPassword("")
+        } else {
+            setValidatedPassword("Password is invalid.")
+        }
 
         if (numberphone.length === 11) {
             setValidatedNumberphone("")
@@ -65,6 +74,7 @@ function FormProfile() {
         let userUpdate = {
             first_name: firstname,
             last_name: lastname,
+            password: password,
             email: email,
             username: username,
             number_phone: numberphone
@@ -123,7 +133,7 @@ function FormProfile() {
                     </div>
 
                     <div style={{ marginTop: "10px", marginLeft: "10px", marginRight: "10px" }}>
-                        <Row className="mb-4" style={{ maxWidth:'28.875em'}}>
+                        <Row className="mb-3" style={{ maxWidth:'28.875em'}}>
                             <Form.Group as={Col} controlId="formName">
                                 <Form.Label><RiUserLine style={{ marginRight: "10px" }} />Name</Form.Label>
                                 <Form.Control maxLength={20} name="first_name" type="text" placeholder="Name" value={firstname} onChange={handleFirstname} isInvalid={validatedFirstname !== ""}/>
@@ -141,11 +151,25 @@ function FormProfile() {
                             </Form.Group>
                         </Row>
 
-                        <Form.Group className="mb-4" controlId="formEmail">
+                        <Form.Group className="mb-3" controlId="formEmail">
                             <Form.Label><RiMailLine style={{ marginRight: "10px" }} />Email</Form.Label>
                             <Form.Control maxLength={50} name="email" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} isInvalid={validatedEmail !== ""} />
                             <Form.Control.Feedback type="invalid">
                                 {validatedEmail}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formPassword">
+                            <Form.Label><RiLock2Line style={{ marginRight: "10px" }} />Password</Form.Label>
+                            <Form.Control maxLength={30} name="password" type="password" placeholder="Password" value={password}  onChange={(e) => setPassword(e.target.value)} isInvalid={validatedPassword !== ""} />
+                            <Form.Control.Feedback type="invalid">
+                                <label>Invalid password. Password must contain:</label>
+                                <ul>
+                                    <li>At least 8 characters;</li>
+                                    <li>At least 1 number;</li>
+                                    <li>At least 1 uppercase letter;</li>
+                                    <li>At least 1 lowercase letter.</li>
+                                </ul>
                             </Form.Control.Feedback>
                         </Form.Group>
 
@@ -157,7 +181,7 @@ function FormProfile() {
                             </Form.Control.Feedback>
                         </Form.Group>
 
-                        <div style={{  marginTop: "20px", marginBottom: "20px", justifyContent: "flex-end", display: "flex", gap: "10px" }}>
+                        <div style={{ marginTop: "20px", marginBottom: "20px", justifyContent: "flex-end", display: "flex" }}>
                             <Button type="submit" onClick={handleDeleteAccount} style={{ width: "10rem", backgroundColor: "#D44747", borderColor: "#D44747", borderRadius: "25px", marginRight: "10px" }}>
                                 Delete Account
                             </Button>

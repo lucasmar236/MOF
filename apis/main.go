@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/lucasmar236/MOF/api/route"
 	"github.com/lucasmar236/MOF/docs"
@@ -19,6 +20,7 @@ func main() {
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	app := infrastructure.App()
 	engine := gin.Default()
+	engine.Use(cors.Default())
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	timeout := time.Second * time.Duration(app.Env.Timeout)
 	route.Setup(app.Env, timeout, app.Cache, app.Email, app.DB, engine)
