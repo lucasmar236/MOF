@@ -14,11 +14,12 @@ func NewContactRepository(db *gorm.DB) domain.ContactRepository {
 	return &contactRepository{db: db}
 }
 
-func (cr *contactRepository) GetAll(c context.Context, user string) (users []domain.UserContacts, err error) {
+func (cr *contactRepository) GetFilteredContacts(c context.Context, user string, filter string) (users []domain.UserContacts, err error) {
 	return users, cr.db.WithContext(c).
 		Table("contacts").
 		Joins("INNER JOIN users ON contacts.id_contact = users.id").
-		Where("contacts.id_user = ? AND contacts.deleted_at IS NULL", user).
+		Where("contacts.id_user = ? AND contacts.deleted_at IS NULL AND users.username LIKE ?", user, "%"+filter+"%").
+		Order("users.username ASC").
 		Select("users.first_name, users.last_name, users.email, users.username, users.number_phone").
 		Find(&users).Error
 }

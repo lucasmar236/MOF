@@ -14,16 +14,17 @@ type ContactController struct {
 	Env            *infrastructure.Env
 }
 
-// @Summary Lista todos os contatos do usuário
+// @Summary Lista todos os contatos do usuário com filtro opcional
 // @Schemes
-// @Description  Lista todos os contatos do usuário
+// @Description Lista todos os contatos do usuário com filtro opcional
 // @Tags Contatos
 // @Accept json
 // @Produce json
-// @Success	201	{object} domain.ContactResponse "Sucesso"
+// @Param	username	query	string	false	"Filtro de contatos"
+// @Success	200	{object} domain.ContactResponse "Sucesso"
 // @Failure 500 {object} domain.Response "Erro interno"
 // @Router /contacts [get]
-func (cc *ContactController) GetAll(c *gin.Context) {
+func (cc *ContactController) GetContacts(c *gin.Context) {
 	username := c.GetString("x-user-username") // pega o usuario que esta logado
 
 	user, err := cc.ContactUseCase.GetUserByUsername(c, username) // pega os dados do usuario que esta logado
@@ -32,7 +33,9 @@ func (cc *ContactController) GetAll(c *gin.Context) {
 		return
 	}
 
-	users, err := cc.ContactUseCase.GetAll(c, strconv.FormatUint(uint64(user.ID), 10))
+	usernameFilter := c.Query("username")
+
+	users, err := cc.ContactUseCase.GetFilteredContacts(c, strconv.FormatUint(uint64(user.ID), 10), usernameFilter)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
 	} else {

@@ -26,10 +26,10 @@ func (cu ContactUseCase) Post(c context.Context, contact *domain.Contact) error 
 	return cu.contact.Post(ctx, contact)
 }
 
-func (cu ContactUseCase) GetAll(c context.Context, user string) ([]domain.UserContacts, error) {
+func (cu ContactUseCase) GetFilteredContacts(c context.Context, user string, filter string) ([]domain.UserContacts, error) {
 	ctx, cancel := context.WithTimeout(c, cu.timeout)
 	defer cancel()
-	return cu.contact.GetAll(ctx, user)
+	return cu.contact.GetFilteredContacts(ctx, user, filter)
 }
 
 func (cu ContactUseCase) GetUserByUsername(c context.Context, username string) (domain.User, error) {

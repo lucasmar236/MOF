@@ -16,8 +16,8 @@ func NewContactRouter(env *infrastructure.Env, timeout time.Duration,
 	cache *redis.Client, email *gomail.Dialer, db *gorm.DB, groupPrivate *gin.RouterGroup) {
 	cr := repository.NewContactRepository(db)
 	ur := repository.NewUserRepository(db, cache, email)
-	fc := &controller.ContactController{ContactUseCase: usecase.NewContactUseCase(cr, ur, timeout), Env: env}
-	groupPrivate.GET("/contacts", fc.GetAll)
-	groupPrivate.POST("/contacts", fc.Post)
-	groupPrivate.DELETE("/contacts", fc.Delete)
+	cc := &controller.ContactController{ContactUseCase: usecase.NewContactUseCase(cr, ur, timeout), Env: env}
+	groupPrivate.GET("/contacts", cc.GetContacts)
+	groupPrivate.POST("/contacts", cc.Post)
+	groupPrivate.DELETE("/contacts", cc.Delete)
 }
