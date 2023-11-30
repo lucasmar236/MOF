@@ -9,17 +9,25 @@ import {
   CREATEUSERCODEVERIFY,
   LISTCHATS,
   LISTCONTACTS,
+  
+  LISTBLOCKEDS,
   LOGINUSER,
 } from "../services/htpp/routesHtpp/contacts/userContacts";
 import UserLogin from "../domain/entities/userLogin";
 import TwoFactors from "../domain/entities/twoFactors";
 import ChangePassword from "../domain/entities/changePassword";
 import Usercontacts from "../domain/entities/usercontacts";
+import Userblockeds from "../domain/entities/userBlockeds";
 import UserChats from "../domain/entities/userChats";
 
 export default class UserRepositoryImpl implements UserRepository {
-  async GetContacts(): Promise<Usercontacts[]> {
-    const resp = await Htpp.get<Usercontacts[]>(LISTCONTACTS);
+  async GetContacts(username?: string): Promise<Usercontacts[]> {
+    const resp = await Htpp.get<Usercontacts[]>(`${LISTCONTACTS}?username=${username}`);
+    return resp.data;
+  }
+
+  async GetBlockeds(): Promise<Userblockeds[]> {
+    const resp = await Htpp.get<Userblockeds[]>(LISTBLOCKEDS);
     return resp.data;
   }
 

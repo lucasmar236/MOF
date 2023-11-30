@@ -17,7 +17,7 @@ function Chats() {
 
   useEffect(() => {
     dispatch(requestListChats());
-    dispatch(requestListContacts());
+    dispatch(requestListContacts(""));
   }, []);
 
   return (

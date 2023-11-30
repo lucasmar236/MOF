@@ -6,8 +6,9 @@ import infosChangePassSlice from "./redux/changePassword/changePassSlice";
 import codeVerifyChangePassSlice from "./redux/authentication/codeVerifyChangePassSLice";
 import CreateUsercodeVerifySlice from "./redux/authentication/CreateUserCodeVerifySLice";
 import listContactsSlice from "./redux/contacts/listContactsSlice";
+import listBlockedsSlice from "./redux/blockeds/listBlockedsSlice";
 import listChatsSlice from "./redux/chats/listchatsSlice";
-
+ 
 export const store = configureStore({
   reducer: {
     userSlice,
@@ -17,6 +18,7 @@ export const store = configureStore({
     codeVerifyChangePassSlice,
     CreateUsercodeVerifySlice,
     listContactsSlice,
+    listBlockedsSlice,
     listChatsSlice,
   },
 });

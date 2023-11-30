@@ -3,6 +3,7 @@ import UserLogin from "../entities/userLogin";
 import TwoFactors from "../entities/twoFactors";
 import ChangePassword from "../entities/changePassword";
 import Usercontacts from "../entities/usercontacts";
+import Userblockeds from "../entities/userBlockeds";
 import UserChats from "../entities/userChats";
 
 export default interface UserRepository {
@@ -10,7 +11,9 @@ export default interface UserRepository {
 
   GetChats(): Promise<UserChats[]>;
 
-  GetContacts(): Promise<Usercontacts[]>;
+  GetContacts(username?:string): Promise<Usercontacts[]>;
+
+  GetBlockeds(): Promise<Userblockeds[]>;
 
   PostUserLogin(user: Object): Promise<UserLogin>;
 

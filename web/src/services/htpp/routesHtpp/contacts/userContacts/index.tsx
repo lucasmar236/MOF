@@ -12,4 +12,8 @@ export const CHANGEPASSWORDCODEVERIFY = "/forgot/verify";
 
 export const LISTCONTACTS = "/contacts";
 
+export const DELETECONTACT = "/contacts";
+
+export const LISTBLOCKEDS = "/blockeds";
+
 export const LISTCHATS = "/chats";

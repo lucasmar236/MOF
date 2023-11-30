@@ -20,11 +20,12 @@ const initialState: data = {
 
 export const requestListContacts = createAsyncThunk(
   "requestListContacts/request",
-  async (_, thunkAPI) => {
+  async (username: string, thunkAPI) => {
     try {
       const requestContactRepo = new UserRepositoryImpl();
       const requestContactService = new UsersServiceImpl(requestContactRepo);
-      const requestContacts = await requestContactService.GetContacts();
+
+      const requestContacts = await requestContactService.GetContacts(username);
       return requestContacts;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data);
