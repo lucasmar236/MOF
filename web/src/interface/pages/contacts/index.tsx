@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import FormMenu from "../../components/private/contacts/formMenu";
+import FormMenu from "../../components/shared/formMenu/formMenu";
 import FormContacts from "../../components/private/contacts/formContacts";
-import { listContactsSlice, requestListContacts } from "../../../services/redux/contacts/listContactsSlice";
+import { requestListContacts } from "../../../services/redux/contacts/listContactsSlice";
 import { useAppDispatch } from "../../../services/hooks";
 
 function Contacts () {

@@ -9,7 +9,7 @@ import {
   CREATEUSERCODEVERIFY,
   LISTCHATS,
   LISTCONTACTS,
-  
+  GETPROFILE,
   LISTBLOCKEDS,
   LOGINUSER,
 } from "../services/htpp/routesHtpp/contacts/userContacts";
@@ -19,6 +19,7 @@ import ChangePassword from "../domain/entities/changePassword";
 import Usercontacts from "../domain/entities/usercontacts";
 import Userblockeds from "../domain/entities/userBlockeds";
 import UserChats from "../domain/entities/userChats";
+import UserProfile from "../domain/entities/userProfile";
 
 export default class UserRepositoryImpl implements UserRepository {
   async GetContacts(username?: string): Promise<Usercontacts[]> {
@@ -28,6 +29,11 @@ export default class UserRepositoryImpl implements UserRepository {
 
   async GetBlockeds(): Promise<Userblockeds[]> {
     const resp = await Htpp.get<Userblockeds[]>(LISTBLOCKEDS);
+    return resp.data;
+  }
+
+  async GetProfile(): Promise<UserProfile> {
+    const resp = await Htpp.get<UserProfile>(GETPROFILE);
     return resp.data;
   }
 

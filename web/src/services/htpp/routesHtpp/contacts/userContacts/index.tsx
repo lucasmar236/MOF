@@ -12,6 +12,8 @@ export const CHANGEPASSWORDCODEVERIFY = "/forgot/verify";
 
 export const LISTCONTACTS = "/contacts";
 
+export const GETPROFILE = "/user";
+
 export const DELETECONTACT = "/contacts";
 
 export const LISTBLOCKEDS = "/blockeds";

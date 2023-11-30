@@ -1,26 +1,37 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { CardManageUser } from "../../shared/cardManageUser";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { RiLock2Line, RiPhoneLine, RiAtLine, RiMailLine, RiUserLine, RiUserAddLine } from "react-icons/ri";
 import userProfile from "../../../../assets/imgs/userProfile.png"
 import {checkEmail} from "../../../utils/functions/checkSharedFieldsFunctions";
 import InputMask from 'react-input-mask';
+import { useSelector } from "react-redux";
 
 function FormProfile() {
-    const getUserInfo = { // substituir isso pela request que busca os dados
-        first_name: "Jose",
-        last_name: "Joseval",
-        email: "jose@gmail.com.br",
-        number_phone: "54999889888",
-        username: "josejoseval34"
-    };
+    const { profile, profileSuccess, profileError, profileLoading } =
+        useSelector((state: any) => ({
+            profile: state.getProfileSlice.profile,
+            profileSuccess: state.getProfileSlice.contactsSuccess,
+            profileError: state.getProfileSlice.contactsError,
+            profileLoading: state.getProfileSlice.contactsLoading,
+        }));
 
-    const [firstname, setFirstname] = useState(getUserInfo.first_name);
-    const [lastname, setLastname] = useState(getUserInfo.last_name);
-    const [email, setEmail] = useState(getUserInfo.email);
-    const [numberphone, setNumberphone] = useState(getUserInfo.number_phone);
-    const [username, setUsername] = useState(getUserInfo.username);
+    const [firstname, setFirstname] = useState(profile.first_name);
+    const [lastname, setLastname] = useState(profile.last_name);
+    const [email, setEmail] = useState(profile.email);
+    const [numberphone, setNumberphone] = useState(profile.number_phone);
+    const [username, setUsername] = useState(profile.username);
     
+    useEffect(() => {
+        if (profile) {
+            setFirstname(profile.first_name);
+            setLastname(profile.last_name);
+            setEmail(profile.email);
+            setNumberphone(profile.number_phone);
+            setUsername(profile.username);
+        }
+    }, [profile]);
+
     const [validatedFirstname, setValidatedFirstname] = useState("")
     const [validatedLastname, setValidatedLastname] = useState("")
     const [validatedEmail, setValidatedEmail] = useState("")

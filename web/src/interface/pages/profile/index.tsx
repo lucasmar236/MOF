@@ -1,7 +1,15 @@
-import React from "react";
-import FormMenu from "../../components/private/profile/formMenu";
+import React, { useEffect } from "react";
+import FormMenu from "../../components/shared/formMenu/formMenu";
 import FormProfile from "../../components/private/profile/formProfile";
+import { requestGetProfile } from "../../../services/redux/profile/getProfileSlice";
+import { useAppDispatch } from "../../../services/hooks";
+
 function Profile () {
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+      dispatch(requestGetProfile());
+    }, []);
 
     return(
         <>

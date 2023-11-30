@@ -1,7 +1,7 @@
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FiArrowLeft, FiUser, FiUsers, FiPower } from "react-icons/fi";
-import { CardMenu } from "../../shared/cardMenu";
+import { CardMenu } from "../cardMenu";
 
 function FormMenu() {
     const firstItemStyle = {

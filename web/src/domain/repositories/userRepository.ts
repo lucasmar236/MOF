@@ -5,6 +5,7 @@ import ChangePassword from "../entities/changePassword";
 import Usercontacts from "../entities/usercontacts";
 import Userblockeds from "../entities/userBlockeds";
 import UserChats from "../entities/userChats";
+import UserProfile from "../entities/userProfile";
 
 export default interface UserRepository {
   // GetUser(): Promise<UserClass[]>
@@ -14,6 +15,8 @@ export default interface UserRepository {
   GetContacts(username?:string): Promise<Usercontacts[]>;
 
   GetBlockeds(): Promise<Userblockeds[]>;
+
+  GetProfile(): Promise<UserProfile>;
 
   PostUserLogin(user: Object): Promise<UserLogin>;
 

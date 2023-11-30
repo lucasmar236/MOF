@@ -8,6 +8,7 @@ import CreateUsercodeVerifySlice from "./redux/authentication/CreateUserCodeVeri
 import listContactsSlice from "./redux/contacts/listContactsSlice";
 import listBlockedsSlice from "./redux/blockeds/listBlockedsSlice";
 import listChatsSlice from "./redux/chats/listchatsSlice";
+import getProfileSlice from "./redux/profile/getProfileSlice";
  
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     listContactsSlice,
     listBlockedsSlice,
     listChatsSlice,
+    getProfileSlice,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;
