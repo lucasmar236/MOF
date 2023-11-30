@@ -15,16 +15,15 @@ import Contacts from "../interface/pages/contacts";
 const authProtected = [
   { path: "/", exact: true, component: <Navigate to="/login" /> },
   { path: "/chats", component: <Chats /> },
-  // {path:"/profile"}
+  { path: "/profile", component: <Profile /> },
+  { path: "/contacts", component: <Contacts /> },
 ];
 
 const publicRoutes = [
   { path: "/login", component: <Login /> },
   { path: "/change-password", component: <ChangePassword /> },
-  { path: "/two-factors", component: <TwoFactor /> },
   { path: "/create-account", component: <Register /> },
-  { path: "/profile", component: <Profile /> },
-  { path: "/contacts", component: <Contacts /> },
+  { path: "/two-factors", component: <TwoFactor /> },
   //   { path: "/chats", component: <Chats /> },
 ];
 

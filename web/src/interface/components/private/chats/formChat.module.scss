@@ -1,0 +1,22 @@
+.ulStyle {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    max-height: 40vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    &::-webkit-scrollbar {
+        width: 18px;
+        border-radius: 20px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #325818; 
+        border-radius: 20px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #d6e2cf73; 
+        border-radius: 20px; 
+    }
+}

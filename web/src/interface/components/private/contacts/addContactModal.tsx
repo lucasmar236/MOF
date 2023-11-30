@@ -1,20 +1,37 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Htpp } from "../../../../services/htpp/htppHelper";
 
 interface AddContactProps {
-    show: boolean;
-    onHide: () => void;
+  show: boolean;
+  onHide: () => void;
+  onContactAdded: () => void;
 }
 
-const AddContactModal: React.FC<AddContactProps> = ({ show, onHide }) => {
-    const [searchText, setSearchText] = useState("");
+const AddContactModal: React.FC<AddContactProps> = ({ show, onHide, onContactAdded }) => {
+  const [searchText, setSearchText] = useState("");
 
-    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchText(e.target.value);
-    };
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleSend = async () => {
+    try {
+        const resp = await Htpp.post<any>("/contacts", { username: searchText });  
+        toast.success("Contact added successfully!");
+        onContactAdded();
+    } catch (error) {
+        toast.error("Invalid user.");
+    } finally {
+      onHide();
+    }
+  };
 
 
     return (
+        <>
         <Modal show={show} onHide={onHide} centered={true}>
             <Modal.Header closeButton style={{ border: 'none' }}>
                 <Modal.Title>Add contacts</Modal.Title>
@@ -36,11 +53,13 @@ const AddContactModal: React.FC<AddContactProps> = ({ show, onHide }) => {
                 <Button type="submit" style={{ width: "10rem", backgroundColor: "#D44747", borderColor: "#D44747", borderRadius: "25px" }} onClick={onHide}>
                     Cancel
                 </Button>
-                <Button type="submit" style={{ width: "10rem", backgroundColor: "#6CC04F", borderColor: "#6CC04F", borderRadius: "25px" }}>
+                <Button type="submit" style={{ width: "10rem", backgroundColor: "#6CC04F", borderColor: "#6CC04F", borderRadius: "25px" }} onClick={handleSend}>
                     Send
                 </Button>
             </Modal.Footer>
         </Modal>
+        <ToastContainer />
+        </>
     );
 };
 

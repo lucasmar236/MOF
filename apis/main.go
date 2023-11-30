@@ -20,14 +20,12 @@ func main() {
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	app := infrastructure.App()
 	engine := gin.Default()
-	engine.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"GET", "OPTIONS"},
-		AllowHeaders:     []string{"Content-Type", "Content-Length", "Accept-Encoding", "Authorization", "Cache-Control", "*"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-	}))
+	config := cors.DefaultConfig()
+    config.AllowOrigins = []string{"http://localhost:3000"} // Adicione a origem do seu aplicativo React aqui
+    config.AllowHeaders = append(config.AllowHeaders, "Authorization") // Permita o cabeçalho de autorização
+    config.AllowCredentials = true // Permita credenciais (cabeçalho de autorização)
+    engine.Use(cors.New(config))
+
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	timeout := time.Second * time.Duration(app.Env.Timeout)
 	route.Setup(app.Env, timeout, app.Cache, app.Email, app.DB, engine)

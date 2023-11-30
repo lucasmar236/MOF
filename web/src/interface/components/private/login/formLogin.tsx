@@ -68,7 +68,7 @@ function FormLogin() {
 
   return (
     <CardLayout
-      title="Sing in"
+      title="Sign in"
       text="Welcome to MOF, your online chat app!"
       imagem=""
     >

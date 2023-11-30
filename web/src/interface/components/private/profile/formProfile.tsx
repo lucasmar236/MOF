@@ -169,9 +169,9 @@ function FormProfile() {
                         </Form.Group>
 
                         <div style={{  marginTop: "20px", marginBottom: "20px", justifyContent: "flex-end", display: "flex", gap: "10px" }}>
-                            <Button type="submit" onClick={handleDeleteAccount} style={{ width: "10rem", backgroundColor: "#D44747", borderColor: "#D44747", borderRadius: "25px", marginRight: "10px" }}>
+                            {/* <Button type="submit" onClick={handleDeleteAccount} style={{ width: "10rem", backgroundColor: "#D44747", borderColor: "#D44747", borderRadius: "25px", marginRight: "10px" }}>
                                 Delete Account
-                            </Button>
+                            </Button> */}
                             <Button type="submit" style={{ width: "10rem", backgroundColor: "#6CC04F", borderColor: "#6CC04F", borderRadius: "25px" }}>
                                 Save
                             </Button>

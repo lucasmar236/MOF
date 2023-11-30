@@ -14,8 +14,15 @@ import styles from "./formContacts.module.scss"
 import contactDefaultPhoto from "../../../../assets/imgs/contactDefaultPhoto.png"
 import communityDefaultPhoto from "../../../../assets/imgs/communityDefaultPhoto.jpg"
 import { useSelector } from "react-redux";
+import { requestListContacts } from "../../../../services/redux/contacts/listContactsSlice";
+import { useAppDispatch } from "../../../../services/hooks";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Htpp } from "../../../../services/htpp/htppHelper";
 
 function FormContacts() {
+    const dispatch = useAppDispatch();
+
     const { contacts, contactsSuccess, contactsError, contactsLoading } =
         useSelector((state: any) => ({
             contacts: state.listContactsSlice.contacts,
@@ -79,7 +86,21 @@ function FormContacts() {
         setShowModalCreateCommunity(false);
     };
 
+    const handleContactAdded = useCallback(() => {
+        dispatch(requestListContacts(""));
+    }, []);
 
+
+    const handleRemoveContact = async (user: string) => {
+        try {
+            const resp = await Htpp.delete<any>(`/contacts?username=${user}`);
+            toast.success("Contact deleted successfully!");
+        } catch (error) {
+            toast.error("An error has occurred. Contact has not been removed");
+        } finally {
+            dispatch(requestListContacts(""));
+        }
+    };
     return (
         <>
             <CardManageUser title=''>
@@ -101,7 +122,7 @@ function FormContacts() {
                                         </div>
                                         <div className={styles.iconsContainer}>
                                             <TbMailUp size={20} className={styles.iconStyle} />
-                                            <IoMdClose size={20} className={styles.iconStyle} />
+                                            <IoMdClose size={20} className={styles.iconStyle} onClick={() => handleRemoveContact(contact.username)}/>
                                         </div>
                                     </li>
                                 )))}
@@ -110,17 +131,17 @@ function FormContacts() {
                                 <p></p>
                             ) : (
                                 showBlockedUsers && blockeds.blockeds.map((blocked: any, index: any) => (
-                                <li key={index} className={styles.contactItem}>
-                                    <div className={styles.blockedContainer}>
-                                        <img alt="Foto do contato bloqueado" src={contactDefaultPhoto} />
-                                        <span><LuShieldOff size={25} /></span>
-                                        <div>{blocked.username}</div>
-                                    </div>
-                                    <div className={styles.blockedIconContainer}>
-                                        <LiaUserSlashSolid size={20} className={styles.iconStyle} />
-                                    </div>
-                                </li>
-                            )))}
+                                    <li key={index} className={styles.contactItem}>
+                                        <div className={styles.blockedContainer}>
+                                            <img alt="Foto do contato bloqueado" src={contactDefaultPhoto} />
+                                            <span><LuShieldOff size={25} /></span>
+                                            <div>{blocked.username}</div>
+                                        </div>
+                                        <div className={styles.blockedIconContainer}>
+                                            <LiaUserSlashSolid size={20} className={styles.iconStyle} />
+                                        </div>
+                                    </li>
+                                )))}
                         </ul>
                         <div className={styles.addContactCommunityButton}>
                             <span onClick={handleAddContact}>Add contact</span>
@@ -153,7 +174,7 @@ function FormContacts() {
             </CardManageUser>
             <ContactFilterModal show={showModalContacts} onHide={handleCloseModalContacts} placeholder="Search Contact" onShowBlockedUsersToggle={handleShowBlockedUsersToggle} />
             <CommunityFilterModal show={showModalCommunitys} onHide={handleCloseModalCommunitys} placeholder="Search Community" />
-            <AddContactModal show={showModalAddContact} onHide={handleCloseModalAddContact} />
+            <AddContactModal show={showModalAddContact} onHide={handleCloseModalAddContact} onContactAdded={handleContactAdded} />
             <CreateCommunityModal show={showModalCreateCommunity} onHide={handleCloseModalCreateCommunity} />
         </>
     )

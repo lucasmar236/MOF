@@ -66,11 +66,22 @@ func (cc *ContactController) Post(c *gin.Context) {
 	var contact = domain.Contact{
 		IdUser: user.ID,
 	}
-	err = c.ShouldBind(&contact)
+	var contactUser domain.User
+	err = c.ShouldBind(&contactUser)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
 		return
 	}
+
+	// Buscar o ID do contato com base no username
+	contactIdUser, err := cc.ContactUseCase.GetUserByUsername(c, contactUser.Username)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
+		return
+	}
+
+	// Atribuir o ID do contato
+	contact.IdContact = contactIdUser.ID
 
 	if contact.IdContact == contact.IdUser {
 		c.JSON(http.StatusBadRequest, domain.Response{Message: "Is not possible add same contact to owner"})
@@ -101,13 +112,14 @@ func (cc *ContactController) Post(c *gin.Context) {
 	c.JSON(http.StatusCreated, domain.Response{Message: "contact added"})
 }
 
+
 // @Summary Deleta contato do usuário
 // @Schemes
 // @Description Deleta contato do usuário
 // @Tags Contatos
 // @Accept json
 // @Produce json
-// @Param    ContactID   body    int64   true    "UserID do contato a ser removido"
+// @Param    username    query    string   true    "Username do contato a ser removido"
 // @Success 204 {object} domain.Response "Sucesso"
 // @Failure 400 {object} domain.Response "Informações inválidas"
 // @Failure 404 {object} domain.Response "Contato não encontrado"
@@ -122,16 +134,16 @@ func (cc *ContactController) Delete(c *gin.Context) {
 		return
 	}
 
-	var contactID struct {
-		ContactID int64 `json:"id_contact" binding:"required"`
-	}
-	if err := c.ShouldBindJSON(&contactID); err != nil {
-		c.JSON(http.StatusBadRequest, domain.Response{Message: err.Error()})
+	deleteRequest := c.Query("username") // Obter o username do parâmetro de consulta
+
+	// verifica se o contato existe
+	contactIDUser, err := cc.ContactUseCase.GetUserByUsername(c, deleteRequest)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
 		return
 	}
 
-	// verifica se o contato existe
-	cont, err := cc.ContactUseCase.GetContactById(c, int64(user.ID), contactID.ContactID)
+	cont, err := cc.ContactUseCase.GetContactById(c, int64(user.ID), int64(contactIDUser.ID))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.Response{Message: err.Error()})
 		return

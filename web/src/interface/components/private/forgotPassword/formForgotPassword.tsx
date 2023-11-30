@@ -135,11 +135,11 @@ function FormForgoutPassword() {
             <Form.Group className="mb-3" controlId="formGroupPassword2">
               <Form.Label>
                 <RiLock2Line style={{ marginRight: "10px" }} />
-                Repit new Password
+                Repeat new Password
               </Form.Label>
               <Form.Control
                 type="password"
-                placeholder="Repit new password"
+                placeholder="Repeat new password"
                 style={
                   validatedNewPasswordToo !== ""
                     ? { borderColor: "red" }
