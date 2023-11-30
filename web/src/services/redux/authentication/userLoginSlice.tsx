@@ -27,13 +27,6 @@ const initialState: data = {
   user: {},
 };
 
-// export const requests = createAsyncThunk("userSlice/request", async ()=>{
-//     const userRepo = new UserRepositoryImpl()
-//     const userSerivce = new UsersServiceImpl(userRepo)
-//     const userList = await userSerivce.GetUser()
-//     return userList
-// })
-
 export const requestLogin = createAsyncThunk(
   "userSlice/request",
   async (data: Object, thunkAPI) => {
@@ -43,6 +36,7 @@ export const requestLogin = createAsyncThunk(
       const sendUser = await userService.PostUserLogin(data);
       return sendUser;
     } catch (error: any) {
+      console.log(error);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
@@ -63,7 +57,7 @@ export const userSlice = createSlice({
       })
       .addCase(requestLogin.rejected, (state, action) => {
         state.userLoading = false;
-        state.userError = action.payload;
+        state.userError = "Invalid credentials";
       })
       .addCase(requestLogin.pending, (state) => {
         state.userLoading = true;

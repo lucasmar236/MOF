@@ -1,7 +1,7 @@
-export default class CreatePrivateChat{
-    contact: number
+export default class CreatePrivateChat {
+  contact: number;
 
-    constructor(contact:number) {
-        this.contact = contact
-    }
+  constructor(contact: number) {
+    this.contact = contact;
+  }
 }

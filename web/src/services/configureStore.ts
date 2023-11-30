@@ -9,7 +9,9 @@ import listContactsSlice from "./redux/contacts/listContactsSlice";
 import listBlockedsSlice from "./redux/blockeds/listBlockedsSlice";
 import listChatsSlice from "./redux/chats/listchatsSlice";
 import getProfileSlice from "./redux/profile/getProfileSlice";
- 
+import listChatPrivateCodeSlice from "./redux/chats/createPrivateChatSlice";
+import listAccessChatPrivateCodeSlice from "./redux/chats/acessPrivateChatSlice";
+
 export const store = configureStore({
   reducer: {
     userSlice,
@@ -22,6 +24,8 @@ export const store = configureStore({
     listBlockedsSlice,
     listChatsSlice,
     getProfileSlice,
+    listChatPrivateCodeSlice,
+    listAccessChatPrivateCodeSlice,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

@@ -50,7 +50,7 @@ export const infosChangePassSlice = createSlice({
         state.loadingInfos = false;
       })
       .addCase(requestChangePassword.rejected, (state, action) => {
-        state.errorInfos = action.payload;
+        state.errorInfos = "User already exists";
         state.loadingInfos = false;
       })
       .addCase(requestChangePassword.pending, (state) => {

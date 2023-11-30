@@ -19,3 +19,5 @@ export const DELETECONTACT = "/contacts";
 export const LISTBLOCKEDS = "/blockeds";
 
 export const LISTCHATS = "/chats";
+
+export const PRIVATECHAT = "/private_chat";

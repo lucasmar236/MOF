@@ -1,21 +1,56 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, ListGroup, Tab, Row, Col } from "react-bootstrap";
 import contactDefaultPhoto from "../../../../assets/imgs/contactDefaultPhoto.png";
 import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../../../services/hooks";
+import { requestChatPrivateCode } from "../../../../services/redux/chats/createPrivateChatSlice";
+import { requestAccessChatPrivateCode } from "../../../../services/redux/chats/acessPrivateChatSlice";
 
 const FormListContact = (props: { user: any; userState: any }) => {
-  const { contacts, contactsSuccess, contactsError, contactsLoading, chats } =
-    useSelector((state: any) => ({
-      contacts: state.listContactsSlice.contacts,
-      contactsSuccess: state.listContactsSlice.contactsSuccess,
-      contactsError: state.listContactsSlice.contactsError,
-      contactsLoading: state.listContactsSlice.contactsLoading,
-      chats: state.listChatsSlice.chats,
-    }));
+  const {
+    contacts,
+    contactsSuccess,
+    contactsError,
+    contactsLoading,
+    chats,
+    chatCode,
+    chatCodeSuccess,
+    chatCodeError,
+    chatCodeLoading,
+    sessionCode,
+  } = useSelector((state: any) => ({
+    contacts: state.listContactsSlice.contacts,
+    contactsSuccess: state.listContactsSlice.contactsSuccess,
+    contactsError: state.listContactsSlice.contactsError,
+    contactsLoading: state.listContactsSlice.contactsLoading,
+    chats: state.listChatsSlice.chats,
+    chatCode: state.listChatPrivateCodeSlice.chatCode,
+    chatCodeSuccess: state.listChatPrivateCodeSlice.chatCodeSuccess,
+    chatCodeError: state.listChatPrivateCodeSlice.chatCodeError,
+    chatCodeLoading: state.listChatPrivateCodeSlice.chatCodeLoading,
+    sessionCode: state.listAccessChatPrivateCodeSlice.sessionCode,
+  }));
+
+  const dispatch = useAppDispatch();
 
   const handleSelect = (e: any) => {
+    let chat = {
+      contact: 2,
+    };
+    dispatch(requestChatPrivateCode(chat));
     props.userState(e.target.id);
   };
+
+  useEffect(() => {
+    if (chatCodeSuccess === "Listado com sucesso") {
+      if (chatCode.chat !== undefined) {
+        let hash = {
+          chat: chatCode.chat,
+        };
+        dispatch(requestAccessChatPrivateCode(hash));
+      }
+    }
+  }, [chatCodeSuccess]);
 
   return (
     <>

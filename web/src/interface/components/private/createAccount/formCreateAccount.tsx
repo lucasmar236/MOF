@@ -64,8 +64,8 @@ function FormCreateAccount() {
     if (sendUserCreateSuccess === "Usuário criado com sucesso!") {
       navigate("/two-factors", { state: "createUser" });
     }
-    if (sendUserCreateError.message === "User already exists") {
-      toast.error(sendUserCreateError.message, {
+    if (sendUserCreateError === "User already exists") {
+      toast.error("User already exists", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,

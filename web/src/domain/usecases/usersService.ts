@@ -52,4 +52,12 @@ export default class UsersServiceImpl {
   async PutChangePassword(data: Object) {
     return this.userRepo.PutChangePassword(data);
   }
+
+  async PostUserCreatePrivateChat(data: Object) {
+    return this.userRepo.PostUserCreatePrivateChat(data);
+  }
+
+  async PostAcessPrivateChat(data: Object) {
+    return this.userRepo.PostAcessPrivateChat(data);
+  }
 }

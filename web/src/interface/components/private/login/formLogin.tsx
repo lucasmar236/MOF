@@ -50,8 +50,8 @@ function FormLogin() {
       localStorage.setItem("userName", email_User);
       navigate("/two-factors", { state: "login" });
     }
-    if (userError.message === "Invalid credentials") {
-      toast.error(userError.message, {
+    if (userError === "Invalid credentials") {
+      toast.error("Invalid credentials", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -65,6 +65,8 @@ function FormLogin() {
       setValidated(false);
     }
   }, [userSuccess, userError]);
+
+  console.log(userError);
 
   return (
     <CardLayout

@@ -57,7 +57,7 @@ export const userCreateSlice = createSlice({
       })
       .addCase(requestCreate.rejected, (state, action) => {
         state.sendUserCreateLoading = false;
-        state.sendUserCreateError = action.payload;
+        state.sendUserCreateError = "User already exists";
       })
       .addCase(requestCreate.pending, (state) => {
         state.sendUserCreateLoading = true;

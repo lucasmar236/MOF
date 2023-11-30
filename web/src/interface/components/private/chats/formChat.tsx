@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -10,8 +10,47 @@ import {
   Stack,
 } from "react-bootstrap";
 import contactDefaultPhoto from "../../../../assets/imgs/contactDefaultPhoto.png";
+import { useSelector } from "react-redux";
+import useWebSocket, { ReadyState } from "react-use-websocket";
 
 const FormChat = (props: { data: string }) => {
+  const { chatCode, sessionCode } = useSelector((state: any) => ({
+    chatCode: state.listChatPrivateCodeSlice.chatCode,
+    sessionCode: state.listAccessChatPrivateCodeSlice.sessionCode,
+  }));
+
+  useEffect(() => {
+    if (chatCode.chat && sessionCode.code !== undefined) {
+      setSocketUrl(
+        `ws://localhost:8080/api/v1/${chatCode.chat}?access_token=${sessionCode.code}`
+      );
+    }
+  }, [chatCode, sessionCode]);
+
+  const [socketUrl, setSocketUrl] = useState("ws://localhost:8080/api/v1");
+  const [messageHistory, setMessageHistory] = useState([]);
+
+  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+
+  useEffect(() => {
+    if (lastMessage !== null) {
+      console.log(lastMessage);
+      // setMessageHistory((prev) => prev.concat(lastMessage));
+    }
+  }, [lastMessage, setMessageHistory]);
+
+  const handleClickSendMessage = useCallback(() => sendMessage("Hello"), []);
+
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: "Connecting",
+    [ReadyState.OPEN]: "Open",
+    [ReadyState.CLOSING]: "Closing",
+    [ReadyState.CLOSED]: "Closed",
+    [ReadyState.UNINSTANTIATED]: "Uninstantiated",
+  }[readyState];
+
+  console.log(messageHistory);
+
   return (
     <>
       <div
@@ -67,7 +106,9 @@ const FormChat = (props: { data: string }) => {
           className="me-auto"
           placeholder="Add your mensage here..."
         />
-        <Button variant="secondary">Submit</Button>
+        <Button variant="secondary" onClick={handleClickSendMessage}>
+          Submit
+        </Button>
       </Stack>
     </>
   );

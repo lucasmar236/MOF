@@ -12,6 +12,7 @@ import {
   GETPROFILE,
   LISTBLOCKEDS,
   LOGINUSER,
+  PRIVATECHAT,
 } from "../services/htpp/routesHtpp/contacts/userContacts";
 import UserLogin from "../domain/entities/userLogin";
 import TwoFactors from "../domain/entities/twoFactors";
@@ -20,10 +21,14 @@ import Usercontacts from "../domain/entities/usercontacts";
 import Userblockeds from "../domain/entities/userBlockeds";
 import UserChats from "../domain/entities/userChats";
 import UserProfile from "../domain/entities/userProfile";
+import CreatePrivateChat from "../domain/entities/createPrivateChat";
+import AccesPrivateChat from "../domain/entities/accessPrivateChat";
 
 export default class UserRepositoryImpl implements UserRepository {
   async GetContacts(username?: string): Promise<Usercontacts[]> {
-    const resp = await Htpp.get<Usercontacts[]>(`${LISTCONTACTS}?username=${username}`);
+    const resp = await Htpp.get<Usercontacts[]>(
+      `${LISTCONTACTS}?username=${username}`
+    );
     return resp.data;
   }
 
@@ -74,6 +79,18 @@ export default class UserRepositoryImpl implements UserRepository {
 
   async PutChangePassword(infos: Object): Promise<ChangePassword> {
     const resp = await Htpp.put<ChangePassword>(CHANGEPASSWORD, infos);
+    return resp.data;
+  }
+
+  async PostUserCreatePrivateChat(contact: Object): Promise<CreatePrivateChat> {
+    const resp = await Htpp.post<CreatePrivateChat>(PRIVATECHAT, contact);
+    return resp.data;
+  }
+  async PostAcessPrivateChat(hash: Object): Promise<AccesPrivateChat> {
+    const resp = await Htpp.post<AccesPrivateChat>(
+      PRIVATECHAT + "/access",
+      hash
+    );
     return resp.data;
   }
 }

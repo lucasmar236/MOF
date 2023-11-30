@@ -6,13 +6,15 @@ import Usercontacts from "../entities/usercontacts";
 import Userblockeds from "../entities/userBlockeds";
 import UserChats from "../entities/userChats";
 import UserProfile from "../entities/userProfile";
+import CreatePrivateChat from "../entities/createPrivateChat";
+import AccesPrivateChat from "../entities/accessPrivateChat";
 
 export default interface UserRepository {
   // GetUser(): Promise<UserClass[]>
 
   GetChats(): Promise<UserChats[]>;
 
-  GetContacts(username?:string): Promise<Usercontacts[]>;
+  GetContacts(username?: string): Promise<Usercontacts[]>;
 
   GetBlockeds(): Promise<Userblockeds[]>;
 
@@ -29,4 +31,8 @@ export default interface UserRepository {
   PostCodeVerifyChangePass(code: Object): Promise<TwoFactors>;
 
   PutChangePassword(infos: Object): Promise<ChangePassword>;
+
+  PostUserCreatePrivateChat(contact: Object): Promise<CreatePrivateChat>;
+
+  PostAcessPrivateChat(hash: Object): Promise<AccesPrivateChat>;
 }
